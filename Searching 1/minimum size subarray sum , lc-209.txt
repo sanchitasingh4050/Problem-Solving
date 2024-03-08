@@ -1,0 +1,27 @@
+class Solution {//easy peasy
+public://using sliding window
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int st=0,end=0,size=0,sum=0,min=nums.size();
+        bool flag=false;
+        for(st=0,end=0;sum>=target || end<nums.size();){
+            //expansion
+            if(sum<target){
+                sum=sum+nums[end];
+                end++;
+                size++;}
+            //shrinking
+            else{
+                    flag=true;
+                    if(min>size)
+                    min=size;
+                    sum=sum-nums[st];
+                     st++;
+                     size--;
+            }
+        }
+       if(flag)
+       return min;
+       else
+       return 0; 
+    }
+};
