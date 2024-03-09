@@ -3,15 +3,15 @@ public:
     int findMin(vector<int>& nums) {//easy peasy
         int low=0, high=nums.size()-1,mid=0;
         int ans=INT_MAX;
-        while(low<=high){// it should always be <= (eg- 1,2,4,5,6,7,0 )
+        while(low<=high){                   // it should always be low<=high (eg- 1,2,4,5,6,7,0 )
             mid=(low+high)/2;
-            if(nums[low]<=nums[mid]){ //it means left part is sorted //but it doesn't always mean it has the min element too
-               ans=min(ans,nums[low]);//as the min can be at the 0th index only in that left part
+            if(nums[low]<=nums[mid]){      //it means left part is sorted //but it doesn't always mean it has the min element too
+               ans=min(ans,nums[low]);     //as the min can be at the 0th index only in that left part
                low=mid+1;
             }
             else{
-                ans=min(ans,nums[mid]);//if right part is sorted
-                high=mid-1;//search for min elem at left part as well as we may have the min elem at left part as well
+                ans=min(ans,nums[mid]);   //if right part is sorted
+                high=mid-1;               //search for min elem at left part as well as we may have the min elem at left part as well
             }
             
         }

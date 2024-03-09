@@ -1,0 +1,39 @@
+class Solution {
+public:
+    bool search(std::vector<int>& nums, int target) {             //easy peasy //using binary search
+        int low = 0, high = nums.size() - 1, mid = 0;
+
+        while (low <= high) {
+            mid = low + (high - low) / 2;
+
+            if (nums[mid] == target) {
+                return true;
+            }
+
+            if (nums[low] < nums[mid]) {                          // Check if the left side is sorted
+                if (nums[low] <= target && target < nums[mid]) {
+                    high = mid - 1;                              // Target is in the left side
+                } 
+                else {
+                    low = mid + 1;                               // Target is in the right side
+                }
+            } 
+            
+            else if (nums[low] > nums[mid]) {                       // Right side is sorted
+                if (nums[mid] < target && target <= nums[high]) {
+                    low = mid + 1;                           // Target is in the right side
+                } 
+                else {
+                    high = mid - 1;                         // Target is in the left side
+                }
+            } 
+            
+            else {// Handle the case when nums[low] == nums[mid]
+            low++; // Move the low pointer to break the tie //we need to use this in case only of array having duplicate 
+            //elements// rest all is same as search in rotated sorted array with unique elements
+            }
+        }
+
+        return false;
+    }
+};

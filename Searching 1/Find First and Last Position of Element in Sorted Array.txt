@@ -1,0 +1,98 @@
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {             //easy peasy // using binary search
+        int low=0, high=nums.size()-1, left=-1, right=-1,mid=0;
+        while(low<=high){                                                //to search first occurence
+            mid=(low+high)/2;
+            if(nums[mid]==target){
+                left=mid;                               //potential first ocuurence
+                high=mid-1;                            //but we can search for more in the left part 
+            }
+            else if(nums[mid]>target){
+                high=mid-1;
+            }
+            else{
+                low=mid+1;
+            }
+
+        }
+
+        low=0,high=nums.size()-1;                  //to search for last occurence
+        while(low<=high){
+          mid=(low+high)/2;
+            if(nums[mid]==target){
+                right=mid;                      //potential last ocuurence
+                low=mid+1;                      //but we can search for more in the right part 
+            }
+            else if(nums[mid]>target){
+                high=mid-1;
+            }
+            else{
+                low=mid+1;
+           }
+
+    }
+    return {left, right};
+         
+    }
+};
+
+
+
+
+ONE MORE WAY-> This version uses a single binarySearch function that takes an additional 
+boolean parameter (findFirst) to indicate whether it should find the leftmost or rightmost occurrence.
+The rest of the logic remains the same.
+This change improves code readability and maintains the O(log n) time complexity.
+
+#include <vector>
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int start = binarySearch(nums, target, true);
+        
+        if (start == -1) {
+            // Target not found
+            return {-1, -1};
+        }
+
+        int end = binarySearch(nums, target, false);
+
+        return {start, end};
+    }
+
+private:
+    int binarySearch(const vector<int>& nums, int target, bool findFirst) {
+        int low = 0, high = nums.size() - 1, result = -1;
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            if (nums[mid] == target) {
+                result = mid;
+
+                if (findFirst) {
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+            } else if (nums[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        return result;
+    }
+};
+
+
+
+
+
+
+
+
+
