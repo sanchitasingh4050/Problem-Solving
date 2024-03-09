@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {                                 //easy peasy
+        int low = 0, high = nums.size() - 1, mid = 0;
+        
+        while (low<=high) {
+            mid = low + (high - low) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            }                                                                //first we need to identify the sorted part
+            if (nums[low] <= nums[mid]) {                                    // Check if the left side is sorted
+                if (nums[low] <= target && target < nums[mid]) {             // Check if the target is in the left side
+                    high = mid - 1;
+                } 
+                else {
+                    low = mid + 1;//else it must be to the right side
+                }
+            } 
+            else {                                                          // Right side is sorted
+                if (nums[mid] < target && target <= nums[high]) {          // Check if the target is in the right side
+                    low = mid + 1;
+                } 
+                else {
+                    high = mid - 1;                                  //if not then target is on left side
+                }
+            }
+        }
+        return -1;
+    }
+};
