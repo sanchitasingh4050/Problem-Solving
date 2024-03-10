@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int findPeakElement(vector<int>& nums) {      //easy peasy //O(logn)->we need to use binary search
+    int n=nums.size();
+    if(n==1){ return 0; }                       // only 1 element in array so it would be the peak element //or return nums;
+    int low=0,high=nums.size()-1,mid=0;
+    if(nums[low]>nums[low+1]){ return low; }
+    if(nums[high]>nums[high-1]){ return high; }
+    else{
+        low=1,high=n-2;
+        while(low<=high){
+            mid=(low+high)/2;
+            if(nums[mid]>nums[mid-1] && nums[mid]>nums[mid+1]){
+                return mid;
+            }
+            else if(nums[mid]<nums[mid+1]){              //we will search in the right part cause we are sure about the answer there
+                low=mid+1;                               //either mid+1 is the answer or the answer lies in the right part if always nums[mid]<nums[mid+1]
+            }
+            else{                       //simialarly otherwise we will search in the left part cause we are sure about the answer there
+                high=mid-1;             //either mid is the answer or the answer lies in the left part if always nums[mid]>nums[mid+1]
+            }
+        }
+    }
+
+return mid;
+        
+    }
+};

@@ -1,0 +1,13 @@
+class Solution {                             //easy peasy
+public:
+    int mySqrt(int x) {                     // using binary search
+    long long low=1,high=x, mid=1,sq=0, ans=0;
+    while(low<=high){
+        mid=(low+high)/2;
+         sq=mid*mid;
+        if(sq<=x){ ans=mid; low=mid+1;}      //potential answer
+        else if(sq>x){ high=mid-1;}
+    };
+    return ans;
+    }
+};

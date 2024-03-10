@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {//easy peasy //using binary search //target ->element appearing only once
+        int n = nums.size();
+        int low = 0;
+        int high = n - 1;
+        
+        if (n == 1)                      //if only single element //these are all edge cases
+            return nums[0];
+        if (nums[0] != nums[1])          //if first element is our target element
+            return nums[0];
+        if (nums[n - 1] != nums[n - 2])  //if last element  is the target element
+            return nums[n - 1];
+        
+        while (low <= high) {                
+            int mid = low + (high - low) / 2;
+            
+            if (mid > 0 && mid < n - 1) {
+                if (nums[mid] != nums[mid - 1] && nums[mid] != nums[mid + 1])    //checking with adjacent elements
+                    return nums[mid];                                           //if none of the adjacent element is equal it means its is the target so just return it
+                                                                                //otherwise we need to find the first occurrence of the element & its index(even or odd)
+                     //if mid is 2nd occ so first occ=mid-1               //if mid is the first occ
+                else if(nums[mid]==nums[mid-1] && (mid-1)%2==0 || nums[mid]==nums[mid+1] && mid%2==0){    //check if first occ. is at even index =>target lies in right half
+                    low = mid + 1;
+                }
+                else {                                         //otherwise target lies in the left half
+                    high = mid - 1;
+                }
+            }
+        }
+        
+        return 0;
+    }
+};
