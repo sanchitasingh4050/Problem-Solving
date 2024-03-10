@@ -13,8 +13,8 @@ public:
             if(nums[mid]>nums[mid-1] && nums[mid]>nums[mid+1]){
                 return mid;
             }
-            else if(nums[mid]<nums[mid+1]){              //we will search in the right part cause we are sure about the answer there
-                low=mid+1;                               //either mid+1 is the answer or the answer lies in the right part if always nums[mid]<nums[mid+1]
+            else if(nums[mid]<nums[mid+1]){          //we will search in the right part cause we are sure about the answer there
+                low=mid+1;                           //either mid+1 is the answer or the answer lies in the right part if always nums[mid]<nums[mid+1]
             }
             else{                       //simialarly otherwise we will search in the left part cause we are sure about the answer there
                 high=mid-1;             //either mid is the answer or the answer lies in the left part if always nums[mid]>nums[mid+1]

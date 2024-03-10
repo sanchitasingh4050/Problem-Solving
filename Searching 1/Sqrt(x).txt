@@ -7,7 +7,8 @@ public:
          sq=mid*mid;
         if(sq<=x){ ans=mid; low=mid+1;}      //potential answer
         else if(sq>x){ high=mid-1;}
-    };
-    return ans;
+    }
+     return ans;
+
     }
 };

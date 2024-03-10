@@ -16,10 +16,10 @@ public:
             int mid = low + (high - low) / 2;
             
             if (mid > 0 && mid < n - 1) {
-                if (nums[mid] != nums[mid - 1] && nums[mid] != nums[mid + 1])    //checking with adjacent elements
+                if (nums[mid] != nums[mid - 1] && nums[mid] != nums[mid + 1])   //checking with adjacent elements
                     return nums[mid];                                           //if none of the adjacent element is equal it means its is the target so just return it
                                                                                 //otherwise we need to find the first occurrence of the element & its index(even or odd)
-                     //if mid is 2nd occ so first occ=mid-1               //if mid is the first occ
+                     //if mid is 2nd occ so first occ=mid-1                     //if mid is the first occ
                 else if(nums[mid]==nums[mid-1] && (mid-1)%2==0 || nums[mid]==nums[mid+1] && mid%2==0){    //check if first occ. is at even index =>target lies in right half
                     low = mid + 1;
                 }

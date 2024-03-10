@@ -14,9 +14,11 @@ public:
                if (ans==arr[low]) { index=low;}              //as the min can be at the 0th index only in that left part
                low=mid+1;
             }
-            else{
+            else{                         //otherwise if right part is sorted
                 ans=min(ans,arr[mid]);
-                if(ans==arr[mid]){ index=mid;}  //if right part is sorted
+
+                if(ans==arr[mid]){ index=mid;}  
+
                 high=mid-1;               //search for min elem at left part as well as we may have the min elem at left part as well
             }
             
