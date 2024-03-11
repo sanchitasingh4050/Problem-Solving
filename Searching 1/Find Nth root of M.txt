@@ -1,0 +1,28 @@
+Class Solution{
+    public:
+    int func(int n, int m,int mid){     //easy peasy
+        long long ans=1;
+        int p=n;
+        while(p>0 ){
+            ans=ans*mid;
+            if(ans>m){ return 2; }    //in case when ans exceeds our limit of m
+            p--;
+        }
+        if(ans==m){ return 1;}
+        else return 0;
+    }
+	public:
+	int NthRoot(int n, int m)
+	{    
+	    long long low=0,high=m,mid;
+	    while(low<=high){
+	        mid=(low+high)/2;
+	        int res=func(n,m,mid);
+	        if(res==1){ return mid;}
+	        else if(res==2){ high=mid-1;}
+	        else{ low=mid+1;}
+	    }
+	    return -1;
+	    
+	}  
+};
