@@ -1,0 +1,31 @@
+#include <vector>
+#include <algorithm>
+
+class Solution {//using binary search
+public:
+    bool canAchieveSize(const vector<int>& nums, int maxOperations, int size) {
+        int operations = 0;
+        for (int num : nums) {
+            operations += (num - 1) / size;
+            if (operations > maxOperations) {          //it means it's not possible to achieve the desired size within the given limit of operations.
+              return false;                           // Therefore, return false
+            }
+        }
+        return true;                        //If the loop completes without exceeding the maximum operations, 
+                                          //it means the desired size is achievable within the given limit of operations. Return true.
+
+    }
+    
+    int minimumSize(vector<int>& nums, int maxOperations) {
+        int low = 1, high = *std::max_element(nums.begin(), nums.end());
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            if (canAchieveSize(nums, maxOperations, mid)) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+};

@@ -1,0 +1,29 @@
+bool isPossible(vector<int>& boards, int k, int mid) {//easy peasy
+    int painters = 1;
+    int sum = 0;
+    for (int board : boards) {
+        if (sum + board > mid) {
+            painters++;
+            sum = board;
+        } else {
+            sum += board;
+        }
+    }
+    return painters <= k;
+}
+
+int findLargestMinDistance(vector<int>& boards, int k) {
+    long long low = *max_element(boards.begin(), boards.end());
+    long long high = accumulate(boards.begin(), boards.end(), 0LL);
+
+    while (low < high) {
+        long long mid = low + (high - low) / 2;
+        if (isPossible(boards, k, mid)) {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+
+    return low;
+}
