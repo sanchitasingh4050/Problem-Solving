@@ -1,0 +1,47 @@
+class Solution{
+  public:
+ 
+    int getLevelDiff(Node *root)// easy peasyy
+    {
+      if(root==NULL){ return NULL; }
+      
+     //we need to perform level order traversal
+
+      unordered_map<int,int>mp;
+      queue<Node*>q;
+      q.push(root);
+      int j=0, sum=0;
+      while(!q.empty()){
+          int size=q.size();
+          j++;
+          sum=0;
+         
+          for(int i=0;i<size;++i){
+              
+          Node* temp= q.front();
+          q.pop();
+
+          sum=sum+temp->data;
+          mp[j]=sum;
+          
+          if(temp->left!=NULL){
+              q.push(temp->left);
+          }
+          
+          if(temp->right!=NULL){
+              q.push(temp->right);
+          }
+      }
+      
+     }
+
+     int oddsum=0;
+     int evensum=0;
+     for(const auto& pair:mp){
+         if(pair.first%2!=0){ oddsum+=pair.second; }
+         else if(pair.first % 2==0){ evensum+=pair.second;}
+     }
+     return oddsum-evensum;
+     
+    }
+};

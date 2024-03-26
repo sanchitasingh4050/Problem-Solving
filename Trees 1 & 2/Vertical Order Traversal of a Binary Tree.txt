@@ -1,0 +1,39 @@
+ class Solution {
+public:
+    void inorderTraversal(TreeNode* root, int row, int col, map<int, vector<pair<int, int>>>& columnMap) {//easy peasy
+        if (!root) return;
+        
+        // Perform inorder traversal
+        inorderTraversal(root->left, row + 1, col - 1, columnMap);
+        
+        // Store node in the columnMap based on its horizontal distance
+        columnMap[col].push_back({row, root->val});
+        
+        inorderTraversal(root->right, row + 1, col + 1, columnMap);
+    }
+    
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        vector<vector<int>> result;
+        if (!root) return result;
+
+        // Map to store nodes at each horizontal distance
+        map<int, vector<pair<int, int>>> columnMap;
+
+        // Perform inorder traversal to populate columnMap
+        inorderTraversal(root, 0, 0, columnMap);
+
+        // Construct result from columnMap
+        for (auto& pair : columnMap) {
+            auto& nodes = pair.second;
+            // Sort nodes at each horizontal distance by row index and then by node value
+            sort(nodes.begin(), nodes.end());
+            vector<int> colNodes;
+            for (auto& node : nodes) {
+                colNodes.push_back(node.second);
+            }
+            result.push_back(colNodes);
+        }
+
+        return result;
+    }
+};

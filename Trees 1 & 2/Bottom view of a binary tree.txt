@@ -1,0 +1,101 @@
+#include <iostream>
+#include <queue>
+#include <map>
+#include <vector>
+using namespace std;
+
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode *left, *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+class Solution {
+public:
+    vector<int> bottomView(TreeNode* root) {
+        vector<int> bottomViewValues;
+        if (root==NULL) return bottomViewValues; 
+        
+        map<int, int> horizontalDistanceMap;     // Map to store horizontal distance and corresponding node values
+        
+        queue<pair<TreeNode*, int>> q;              // Queue for level order traversal with horizontal distance
+        q.push({root, 0});                        // Root node with horizontal distance 0
+        
+        while (!q.empty()) {
+            TreeNode* node = q.front().first;
+            int hd = q.front().second;
+            q.pop();
+            
+                                                    // Update the value associated with the horizontal distance everytime
+            horizontalDistanceMap[hd] = node->val;
+            
+                                                   // Push left child with updated horizontal distance
+            if (node->left) {
+                q.push({node->left, hd - 1});
+            }
+            
+                                                   // Push right child with updated horizontal distance
+            if (node->right) {
+                q.push({node->right, hd + 1});
+            }
+        }
+        
+                                                    // Extract bottom view values from the horizontal distance map
+        for (const auto& pair : horizontalDistanceMap) {
+            bottomViewValues.push_back(pair.second);
+        }
+        
+        return bottomViewValues;
+    }
+};
+
+// Function to create a binary tree from an array representation
+TreeNode* createTreeFromArray(const vector<int>& arr, int index) {
+    TreeNode* root = nullptr;
+    if (index < arr.size()) {
+        if (arr[index] != -1) {
+            root = new TreeNode(arr[index]);
+            root->left = createTreeFromArray(arr, 2 * index + 1);
+            root->right = createTreeFromArray(arr, 2 * index + 2);
+        }
+    }
+    return root;
+}
+
+// Function to delete a binary tree
+void deleteTree(TreeNode* root) {
+    if (root) {
+        deleteTree(root->left);
+        deleteTree(root->right);
+        delete root;
+    }
+}
+
+int main() {
+    // Example 
+    vector<int> arr1 = {1, 2, 3, 4, 5, 6, 7};
+    TreeNode* root1 = createTreeFromArray(arr1, 0);
+    Solution sol1;
+    vector<int> bottomView1 = sol1.bottomView(root1);
+    cout << "Bottom view of Example 1: ";
+    for (int val : bottomView1) {
+        cout << val << " ";
+    }
+    cout << endl;
+    deleteTree(root1);
+
+  
+    vector<int> arr2 = {10, 20, 30, 40, 60, 90, 100};
+    TreeNode* root2 = createTreeFromArray(arr2, 0);
+    Solution sol2;
+    vector<int> bottomView2 = sol2.bottomView(root2);
+    cout << "Bottom view of Example 2: ";
+    for (int val : bottomView2) {
+        cout << val << " ";
+    }
+    cout << endl;
+    deleteTree(root2);
+
+    return 0;
+}

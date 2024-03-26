@@ -1,0 +1,37 @@
+class Solution {
+public:
+    vector<int> topView(Node *root) {              //easy peasy
+        if (root==NULL) return {}; 
+        
+        map<int, int>mp;                           // Map to store horizontal distance and node value
+        
+        queue<pair<Node*, int>> q;                // Queue for level order traversal
+        q.push({root, 0});                        // Push root node with horizontal distance 0
+        
+        while (!q.empty()) {
+            Node* node = q.front().first;
+            int hd = q.front().second;
+            q.pop();
+            
+                                                  // Store the first node encountered at each horizontal distance
+            if (mp.find(hd) == mp.end()) {        //if same do not have any element
+               mp[hd] = node->data;
+            }
+            
+                                                 // Push left child with horizontal distance decreased by 1
+            if (node->left) {
+                q.push({node->left, hd - 1});
+            }
+            
+                                                 // Push right child with horizontal distance increased by 1
+            if (node->right) {
+                q.push({node->right, hd + 1});
+            }
+        }
+        
+        vector<int> result;
+        for (auto pair : mp) {
+            result.push_back(pair.second);
+        }
+        
+        return result;
