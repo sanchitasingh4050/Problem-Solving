@@ -1,0 +1,19 @@
+class Solution {                                         //easy peasy
+public:
+    TreeNode* invertTree(TreeNode* root) {
+    
+        if(root==NULL){
+            return NULL;
+        }
+
+        if(root->left!=NULL || root->right!=NULL){
+        TreeNode* temp=root->left;                      // temporary node to swap the elements
+        root->left=root->right;
+        root->right=temp;
+        }
+
+        invertTree(root->left);                           //recursion
+        invertTree(root->right);
+        return root;
+    }
+};

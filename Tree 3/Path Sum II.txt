@@ -1,0 +1,30 @@
+class Solution {                                              //easy peasy
+public:
+    vector<vector<int>> ans;
+
+    void pathSumUtil(TreeNode* root, int targetSum, vector<int>& path) {
+        if (!root)
+            return;
+
+                                                            // Adding current node's value to the path
+        path.push_back(root->val);
+
+                                                            // If it's a leaf node and its value matches the remaining target sum, add the path to ans
+        if (root->left==NULL  && root->right==NULL  && root->val == targetSum)
+            ans.push_back(path);
+
+                                                            // Recursively checking the left and right subtrees
+        pathSumUtil(root->left, targetSum - root->val, path);
+        pathSumUtil(root->right, targetSum - root->val, path);
+
+                                                           // Removing the current node's value from the path before backtracking
+        path.pop_back();
+    }
+
+
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        vector<int> path;
+        pathSumUtil(root, targetSum, path);
+        return ans;
+    }
+};

@@ -1,0 +1,39 @@
+class Solution {
+public:
+    long long pathSum(TreeNode* root, long long targetSum) {           //easy peasy
+        if (!root)
+            return 0;
+
+        long long count = 0;
+        queue<TreeNode*> q;
+        q.push(root);
+
+        while (!q.empty()) {
+            TreeNode* curr = q.front();
+            q.pop();
+
+            count += countPaths(curr, targetSum, 0);
+
+            if (curr->left)
+                q.push(curr->left);
+            if (curr->right)
+                q.push(curr->right);
+        }
+
+        return count;
+    }
+
+private:
+    long long countPaths(TreeNode* root, long long targetSum, long long currsum) {
+        if (!root)
+            return 0;
+
+        currsum += root->val;
+        long long count = (currsum == targetSum) ? 1LL : 0LL;
+
+        count += countPaths(root->left, targetSum, currsum);
+        count += countPaths(root->right, targetSum, currsum);
+
+        return count;
+    }
+};

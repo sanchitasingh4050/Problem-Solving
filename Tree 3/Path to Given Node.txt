@@ -1,0 +1,26 @@
+
+bool path(TreeNode* A, int B, vector<int>& ans){   //easy peasy
+
+        if(A==NULL){ return false; }
+
+        if(A->val==B || path(A->left,B,ans) || path( A->right ,B,ans)){
+            ans.push_back(A->val);
+            return true;
+        }
+
+        return false;                              //the case where the tree is empty or the key is not found in the tree.
+    }
+
+
+vector<int> Solution::solve(TreeNode* A, int B) {
+
+    if(A==NULL){ return {}; }
+
+    vector<int>ans;
+
+    path(A,B, ans);
+
+    reverse(ans.begin(),ans.end());
+
+    return ans;
+}

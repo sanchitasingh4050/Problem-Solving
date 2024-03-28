@@ -1,0 +1,47 @@
+class Solution {                                                   //easy peay
+public:
+    
+    Node* lca(Node* root, int a, int b) {
+        if (root==NULL ){ return NULL; }
+        if (root->data == a || root->data == b) {
+            return root;
+        }
+
+        Node* leftLCA = lca(root->left, a, b);
+        Node* rightLCA = lca(root->right, a, b);
+
+        if (leftLCA!=NULL   &&  rightLCA!=NULL) {
+            return root;
+        }
+        return leftLCA!=NULL ? leftLCA : rightLCA;            //if they both lie in same sides/same subtree
+    }
+    
+    int findDist(Node* root, int a, int b) {
+                                                                    
+        Node* lcaNode = lca(root, a, b);                      // Find lowest common ancestor
+        
+                                                              // Calculating distance from LCA to node a i.e source
+        int distA = distanceFromNode(lcaNode, a, 0);
+        
+                                                             // Calculating distance from LCA to node b i.e destination
+        int distB = distanceFromNode(lcaNode, b, 0);
+        
+                                                            // Return sum of distances (min dist b/w the two nodes)
+        return distA + distB;
+    }
+    
+    int distanceFromNode(Node* root, int target, int depth) {
+        if (root==NULL) {
+            return -1;                                       // Node not found
+        }
+        if (root->data == target) {
+            return depth;
+        }
+
+        int leftDist = distanceFromNode(root->left, target, depth + 1);
+        int rightDist = distanceFromNode(root->right, target, depth + 1);
+     
+        return max(leftDist, rightDist);
+      
+    }
+};

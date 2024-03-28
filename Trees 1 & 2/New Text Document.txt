@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int findBottomLeftValue(TreeNode* root) {//easy peasy
+        if (!root) return -1; 
+        
+        int leftmostValue = -1;        // Initialize leftmost value
+        
+        queue<TreeNode*> q;              // Queue for level order traversal
+        q.push(root);
+        
+        while (!q.empty()) {
+            int levelSize = q.size();
+            leftmostValue = q.front()->val; // Update leftmost value for the current level
+            
+                                              // Process all nodes in the current level
+            for (int i = 0; i < levelSize; ++i) {
+                TreeNode* node = q.front();
+                q.pop();
+                
+                
+                if (node->left) {         // Pushing left child to queue
+                    q.push(node->left);
+                }
+                
+               
+                if (node->right) {          // Pushing right child to queue
+                    q.push(node->right);
+                }
+            }
+        }
+        
+        return leftmostValue; // Returning leftmost value of the last level
+    }
+};

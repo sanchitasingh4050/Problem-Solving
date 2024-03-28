@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {//easy peasy
+        queue<TreeNode*>q;
+        vector<int>v;
+        if(root==NULL){ return {}; }
+        q.push(root);
+        while(!q.empty()){
+            
+            int size=q.size();
+
+            for(int i=0 ; i < size ; i++){
+                TreeNode* temp=q.front();
+                q.pop();
+               
+                if(temp->left){ q.push(temp->left); }
+                if(temp->right){ q.push(temp->right); }
+
+                if(i==size-1 ){ v.push_back(temp->val); }//for last node inserted at each level
+
+            }
+        }
+        return v;
+    }
+};

@@ -1,0 +1,27 @@
+class Solution { // easy peasy
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+     vector<string>ans;
+     string path;
+     if(root==NULL){
+         return ans;//if no node exists
+     }
+
+     constructpath(root,"",ans);//function calling (passing an empty string initially)
+     return ans;//final return
+    }
+
+
+     void constructpath( TreeNode* node, string path, vector<string>&ans)
+     {
+         if(node->left==NULL && node->right==NULL){ //leaf node
+            path=path+to_string(node->val);
+            ans.push_back(path);
+            return;
+        }
+          path+=to_string(node->val) + "->";
+         if(node->left!=NULL){ constructpath(node->left,path,ans); }
+
+         if(node->right!=NULL){ constructpath(node->right,path,ans);}
+     }
+};
