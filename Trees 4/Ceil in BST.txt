@@ -1,0 +1,24 @@
+void check(Node* root, int key, int& ans){                //easy peasy
+    if(root==NULL){ return;}
+    if(root->data==key || ans==key){ans=key; return; }
+    if(root->data>key){ 
+        
+        ans=root->data;                                   //potential ans
+        check(root->left, key, ans);
+    }
+    else if(root->data<key){ 
+        if(root->right!=NULL && root->right->data>key )
+        ans=root->right->data;                           //potential ans
+        check(root->right, key, ans);
+    }
+    
+}
+int findCeil(Node* root, int input) {
+    if (root == NULL){ return -1; }
+    int ans=root->data;
+    int key=input;
+    check(root, key, ans);
+    if(ans>=key)return ans;
+    return -1;
+
+}

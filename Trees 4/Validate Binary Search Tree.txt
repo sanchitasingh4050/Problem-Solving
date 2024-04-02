@@ -1,0 +1,20 @@
+class Solution {          //easy peasy
+public:
+    void inorder(TreeNode* root, vector<int>&v){
+        if(root==NULL){ return; }
+        inorder(root->left, v);
+        v.push_back(root->val);
+        inorder(root->right, v);
+    }
+
+    bool isValidBST(TreeNode* root) {
+        vector<int>v;                       //it will store the inorder traversal
+        inorder(root, v);
+        for(int i=1;i<v.size();i++){
+            if(v[i-1]>=v[i]){ return false;}  //if not in sorted order
+        }
+
+    return true;
+        
+    }
+};
