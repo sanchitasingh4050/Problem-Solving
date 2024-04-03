@@ -1,0 +1,26 @@
+login DGX
+write on terminal- ssh user8@192.168.43.101
+password- user8 (if it asks)
+we need to send from local system to dgx system server
+navigate to the location where the folder is saved (not inside the folder) by using the cd command then write the below command
+scp -r name_of_the_folder user8@192.168.43.101:/home/user8
+the above command will take some time for the transfer of the folder as the folder will get uploaded from our local system to the DGX server
+once the transfer gets completed!
+write- ls (the folder will be displayed here then)
+cd PPE-VIOLATION-DETECTION
+ls
+vim
+INSERT
+change from 'CPU' to '0' then press the required keys to save the changes (this was done to utilise the GPU)
+in linux- escape:wq (press enter) to save the changes (to use GPU instead of CPU)
+vim
+"Dockerfile" (display hoga ye)
+uncomment this- FROM nvcr.io/nvidia/pytorch..kuch hoga
+make changes in hub.custom.py & dockerfile
+run dockerfile container- flask works by default on port no.500 (you can put any , eg - 8080)
+GPU Partition bhi kiya h- 1 into 2 parts (eg two migs will be shown - eg 2:0 & 2:1 i. 2nd GPU ka 1st part & 2nd part)
+docker sum -p <port_no>:5000 --gpus "device=2:0" --rm --name <container_name> <image_name> 
+// < > brackets only for understanding purpose don't write brackets in terminal
+you will be able to see the project video now on the browser in realtime
+you check with the app-ip web cam on the phone as well and the network should be same for phone as well as our laptop i.e gl bajaj wifi
+

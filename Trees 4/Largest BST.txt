@@ -1,0 +1,41 @@
+class Solution{                     //easy peasy
+public:
+    int largestBst(Node *root)
+    {
+        int min_val = INT_MIN;
+        int max_val = INT_MAX;
+        int max_size = 0;
+        int size = 0;
+        checkBST(root, min_val, max_val, size, max_size);
+        return max_size;
+    }
+                                 //function to recursively check if the subtree is a BST
+                                 //and update the maximum size of BST found so far
+    void checkBST(Node *root, int &min_val, int &max_val, int &size, int &max_size) {
+        if (root == nullptr)
+            return;
+
+        int lmin = INT_MIN;
+        int lmax = INT_MAX;
+        int rmin = INT_MIN; 
+        int rmax = INT_MAX;
+        int left_size = 0, right_size = 0;
+
+        checkBST(root->left, lmin, lmax, left_size, max_size);
+        checkBST(root->right, rmin, rmax, right_size, max_size);
+
+                                                                 // Checking if current subtree is a BST
+        if ((root->left == nullptr || (root->left != nullptr && root->data > lmax)) &&
+            (root->right == nullptr || (root->right != nullptr && root->data < rmin))) {
+            size = 1 + left_size + right_size;
+            max_size = max(max_size, size);
+            min_val = root->left ? lmin : root->data;
+            max_val = root->right ? rmax : root->data;
+        } else {
+                                                           // If current subtree is not a BST, setting size to 0
+            size = 0;
+            min_val = INT_MIN;
+            max_val = INT_MAX;
+        }
+    }
+};

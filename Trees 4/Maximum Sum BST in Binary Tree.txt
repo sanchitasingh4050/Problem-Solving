@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maxSumBST(TreeNode* root) {                         //easy peasy
+        int max_sum = 0;
+        maxSum(root, max_sum);
+        return max_sum;
+    }
+                                                            //function to recursively check if the subtree is a BST
+                                                            // and update the maximum sum of BST found so far
+    tuple<bool, int, int, int> maxSum(TreeNode* node, int& max_sum) {
+        if (node == nullptr)
+            return {true, 0, INT_MAX, INT_MIN};
+        
+        auto [lbst, lsum, lmin, lmax] = maxSum(node->left, max_sum);
+        auto [rbst, rsum, rmin, rmax] = maxSum(node->right, max_sum);
+        
+        if (lbst && rbst && lmax < node->val && node->val < rmin) {
+            int total_sum = node->val + lsum + rsum;
+            max_sum = max(max_sum, total_sum);
+            return {true, total_sum, min(node->val, lmin), max(node->val, rmax)};
+        }
+        
+        return {false, 0, 0, 0};
+    }
+};
