@@ -1,0 +1,36 @@
+class Solution
+{
+    public:
+    void inorder(Node* root, vector<int>&v){          //easy peasy
+        if(root==NULL){ return; }
+        inorder(root->left, v);
+        v.push_back(root->data);
+        inorder(root->right, v);
+    
+    }
+    vector <int> findCommon(Node *root1, Node *root2)
+    {
+                               //we can solve this by finding the inorder traversal of both the trees
+                               //& then traversing them
+     vector<int>v1;
+     vector<int>v2;
+     vector<int>res;
+     inorder(root1,v1);       //inorder travesal
+     inorder(root2,v2);
+     
+    int i=0,j=0;
+    int n=v1.size();
+    int m=v2.size();
+    while(i<n && j<m){
+        
+        if(v1[i]==v2[j])      //common nodes
+        { res.push_back(v1[i]);
+           i++; j++;
+        }
+        else if(v1[i]<v2[j]){ i++; }
+        else{ j++; }
+    }
+    return res;
+     
+    }
+};

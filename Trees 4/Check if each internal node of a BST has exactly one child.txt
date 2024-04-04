@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+bool OnlyOneChild(vector<int>&pre, int size)  //easy peasy
+{
+    int maxVal = INT_MAX;
+    int minVal = INT_MIN; 
+    
+    for (int i = 1; i < size; i++) {
+        if (pre[i] < minVal || pre[i] > maxVal) {
+            return false;
+        }
+        
+        if (pre[i-1] > pre[i]) {
+            maxVal = pre[i-1];              // Updating maximum value for left child 
+        } 
+        else {
+            minVal = pre[i-1];              // Updating minimum value for right child
+        }
+    }
+    
+    return true;
+}
+
+int main()
+{
+    vector<int>v;
+    cout<<"enter nodes of the bst (preorder traversal): ";
+    int n;
+    cin>>n;
+    cout<<"enter elements: ";
+    for(int i=0;i<n;i++){
+        int ele;
+        cin>>ele;
+        v.push_back(ele);
+    }
+    
+    int size = v.size();
+    if (OnlyOneChild(v, size) == true )
+        cout << "Yes, each node has only one child";
+    else
+        cout << "No, every node doesn't have only one child";
+    return 0;
+}
