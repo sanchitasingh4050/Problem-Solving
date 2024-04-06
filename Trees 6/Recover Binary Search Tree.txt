@@ -1,0 +1,22 @@
+class Solution {                               //easy peasy
+public:
+	TreeNode* first, *second, *prev;
+	void recoverTree(TreeNode* root) {
+		prev = new TreeNode(INT_MIN);
+		inorder(root);
+		swap(first->val, second->val);
+	}
+
+	void inorder(TreeNode* root) {        //inorder traversal
+		if(root == nullptr) 
+			return;
+
+		inorder(root->left);
+
+		if(first == NULL && root->val < prev->val) { first = prev; }  //since iorder is always sorted in a bst
+		if(first!= NULL && root->val < prev->val){   second = root; }
+		    prev = root;
+    
+		inorder(root->right);
+	}
+};
