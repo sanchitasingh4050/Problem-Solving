@@ -1,15 +1,15 @@
-class Solution {  //easy peasy
+class Solution {
 public:
-    void sumNodes(TreeNode* root, int low, int high, int& sum){
+    void sumall(TreeNode* root, int low, int high, int& sum){  //easy peasy
         if(root==NULL){ return;}
         if(root->val>=low && root->val<=high){ sum=sum+root->val;}
-        sumNodes(root->left, low, high, sum); 
-        sumNodes(root->right, low, high, sum);
+        sum_all(root->left, low, high, sum); 
+        sum_all(root->right, low, high, sum);
 
     }
     int rangeSumBST(TreeNode* root, int low, int high) {
     int sum=0;
-    sumNodes(root, low, high, sum);
+    sumall(root, low, high, sum);
     return sum;
          
     }
