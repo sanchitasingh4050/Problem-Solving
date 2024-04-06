@@ -1,0 +1,30 @@
+class Solution {
+public:
+    TreeNode* sortedListToBST(ListNode* head) {   //easy peasy
+        if (head == NULL) return NULL;
+        if (head->next == NULL) return new TreeNode(head->val);
+
+        ListNode* slow = head;
+        ListNode* fast = head;
+        ListNode* prev = NULL;
+
+                                                     // Finding the middle node using the two-pointer technique
+        while (fast != NULL && fast->next != NULL) {
+            prev = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+                                                   //for Splitting the linked list into two halves
+        if (prev != NULL){ prev->next = NULL; }    // Disconnecting the left half
+
+                                                   // Creating a new node with the middle value as the root of the BST
+        TreeNode* root = new TreeNode(slow->val);
+
+                                                   // Recursively constructing the left and right subtrees
+        root->left = sortedListToBST(head);
+        root->right = sortedListToBST(slow->next);
+
+        return root;
+    }
+};

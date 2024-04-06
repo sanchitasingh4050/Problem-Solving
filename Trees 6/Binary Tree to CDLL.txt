@@ -1,0 +1,47 @@
+class Solution {
+public:
+    pair<Node*, Node*> convertToCDLL(Node* node) {            //easy peasy
+        if (node == NULL)return {NULL, NULL};
+
+                                                              // Converting left subtree
+        pair<Node*, Node*> left = convertToCDLL(node->left);
+                                                              // Converting right subtree
+        pair<Node*, Node*> right = convertToCDLL(node->right);
+
+                                                             // Making the current node a circular doubly linked list
+        node->left = node;
+        node->right = node;
+
+                                       // Concatenating left subtree CDLL with current node CDLL
+        if (left.first != NULL) {
+            left.second->right = node;
+            node->left = left.second;
+            left.second = node;
+        }
+
+                                        // Concatenating right subtree CDLL with current node CDLL
+        if (right.first != NULL) {
+            node->right = right.first;
+            right.first->left = node;
+            right.first = right.second;
+        }
+
+                                               // Returning head and tail of the CDLL
+        return {left.first != NULL ? left.first : node,
+                right.second != NULL ? right.second : node};
+    }
+
+    Node* bTreeToCList(Node* root) {
+        if (root == NULL){ return NULL; }
+
+                                                          // Converting binary tree to CDLL
+        pair<Node*, Node*> result = convertToCDLL(root);
+
+                                                       // Making the CDLL circular
+        result.first->left = result.second;
+        result.second->right = result.first;
+
+                                       // Returning head of the CDLL
+        return result.first;
+    }
+};

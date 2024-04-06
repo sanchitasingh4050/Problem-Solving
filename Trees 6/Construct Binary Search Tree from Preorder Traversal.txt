@@ -1,0 +1,30 @@
+class Solution {    //easy peasy
+public:
+    void insertIntoBST(TreeNode* root, int val) {
+        if (val < root->val) {
+            if (root->left == NULL) {
+                root->left = new TreeNode(val);
+            } 
+            else {
+                insertIntoBST(root->left, val);
+            }
+        } 
+        else {                              //if val> root->val
+            if (root->right == NULL) {
+                root->right = new TreeNode(val);
+            } 
+            else {
+                insertIntoBST(root->right, val);
+            }
+        }
+    }
+
+    TreeNode* bstFromPreorder(vector<int>& preorder) {    //given func
+        if (preorder.empty()) return NULL;
+        TreeNode* root = new TreeNode(preorder[0]);
+        for (int i = 1; i < preorder.size(); ++i) {
+            insertIntoBST(root, preorder[i]);
+        }
+        return root;
+    }  
+};

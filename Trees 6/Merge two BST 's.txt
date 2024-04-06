@@ -1,0 +1,44 @@
+class Solution //easy peasy
+{
+    public:
+    void inorder(Node* root, vector<int>&v){
+        if(root==NULL){ return; }
+        inorder(root->left, v);
+        v.push_back(root->data);
+        inorder(root->right, v);
+    }
+
+    vector<int> merge(Node *root1, Node *root2)
+    {
+       vector<int>v1;
+       vector<int>v2;
+       inorder(root1, v1);
+       inorder(root2, v2);
+       
+       vector<int>ans;
+       int i=0, j=0;
+       int n=v1.size();
+       int m=v2.size();
+       while(i<n || j<m){
+            
+           if(i<n && j==m){ ans.push_back(v1[i]); i++; }
+           
+           else if(j<m && i==n){ ans.push_back(v2[j]); j++; }
+           
+           else if(v1[i]==v2[j]){ 
+               ans.push_back(v1[i]);
+               ans.push_back(v1[i]);
+               i++;
+               j++;
+           }
+           else if(v1[i]<v2[j]){
+               ans.push_back(v1[i]); i++;
+            }
+           else if(v1[i]>v2[j]){
+               ans.push_back(v2[j]); j++;
+           }
+            
+       }
+        return ans;
+      }
+};
