@@ -1,0 +1,43 @@
+struct Node {
+    Node *children[26] = {};   //easy paesy
+    int count = 0;
+};
+
+class Trie {
+    Node root;
+public:
+    void insert(string word) {
+        auto node = &root;
+        for (char c : word) {
+            if (!node->children[c - 'a']) {
+                node->children[c - 'a'] = new Node();
+            } 
+            node->children[c - 'a']->count++;
+            node = node->children[c - 'a'];   
+        }
+    }
+
+    int prefixCount(string s) {
+        auto node = &root;
+        int ans = 0;
+        for (char c : s) {
+            ans += node->children[c - 'a']->count;
+            node = node->children[c - 'a'];
+        }
+        return ans;
+    }
+    
+    vector<int> sumPrefixScores(vector<string>& words) {
+        int N = words.size();
+	
+        for (int i = 0; i < N; i++) { 	// Inserting words in trie.
+                insert(words[i]);
+        }
+        vector<int> ans(N, 0);
+        for (int i = 0; i < N; i++) {
+			
+            ans[i] = prefixCount(words[i]); // Get the count of all prefixes of given string.
+        }
+        return ans;
+    }
+};
