@@ -1,0 +1,89 @@
+include <iostream>   //easy peasy
+#include <vector>
+using namespace std;
+
+const int ALPHABET_SIZE = 26;
+
+class TrieNode {
+public:
+    TrieNode* children[ALPHABET_SIZE];
+    bool isEndWord;
+
+    TrieNode() {
+        for (int i = 0; i < ALPHABET_SIZE; ++i)
+            children[i] = nullptr;
+        isEndWord = false;
+    }
+};
+
+class Trie {
+public:
+    TrieNode* root;
+
+    Trie() {
+        root = new TrieNode();
+    }
+
+    void insert(string word) {
+        TrieNode* current = root;
+        for (char ch : word) {
+            int index = ch - 'a';
+            if (!current->children[index])
+                current->children[index] = new TrieNode();
+            current = current->children[index];
+        }
+        current->isEndWord = true;
+    }
+
+    bool search(string word) {
+        TrieNode* current = root;
+        for (char ch : word) {
+            int index = ch - 'a';
+            if (!current->children[index])
+                return false;
+            current = current->children[index];
+        }
+        return current != nullptr && current->isEndWord;
+    }
+
+    void autoComplete(string prefix) {
+        TrieNode* current = root;
+        for (char ch : prefix) {
+            int index = ch - 'a';
+            if (!current->children[index]) {
+                cout << "No words found with the given prefix." << endl;
+                return;
+            }
+            current = current->children[index];
+        }
+
+        autoCompleteHelper(current, prefix);
+    }
+
+private:
+    void autoCompleteHelper(TrieNode* node, string prefix) {
+        if (node->isEndWord) {
+            cout << prefix << endl;
+        }
+
+        for (int i = 0; i < ALPHABET_SIZE; ++i) {//to check for all words with that prefix
+            if (node->children[i]) {
+                autoCompleteHelper(node->children[i], prefix + char('a' + i));
+            }
+        }
+    }
+};
+
+int main() {
+    Trie trie;
+    vector<string> words = {"abc", "abcd", "aa", "abbbaba"};
+    for (const string& word : words) {
+        trie.insert(word);
+    }
+
+    string prefix = "abc";
+    cout << "Auto-complete suggestions for prefix \"" << prefix << "\":" << endl;
+    trie.autoComplete(prefix);
+
+    return 0;
+}

@@ -1,0 +1,72 @@
+struct TrieNode {    //easy peasy
+    int smallest_index;
+    int smallest_length;
+    TrieNode* children[26];
+
+    TrieNode() {
+        for (int i = 0; i < 26; ++i) {
+            children[i] = NULL;
+        }
+        smallest_length = INT_MAX;
+        smallest_index = -1;
+    }
+};
+
+
+
+
+class Solution {
+ public:
+    TrieNode* root = new TrieNode();
+    int smallest_length = INT_MAX;
+    int smallest_index = -1;
+
+    vector<int> stringIndices(vector<string>& wordsContainer, vector<string>& wordsQuery) {
+        for (int i = 0; i < wordsContainer.size(); ++i) {
+            insert(wordsContainer[i], i);
+        }
+
+        vector<int> ans;
+        for (string& word : wordsQuery) {
+            ans.push_back(find(word));
+        }
+        return ans;
+    }
+
+
+
+    int find(string& word) {
+        TrieNode* temp = root;
+        int ans = -1;
+        for (int i = word.length() - 1; i >= 0; --i) {
+            if (temp->children[word[i] - 'a'] != NULL) {
+                temp = temp->children[word[i] - 'a'];
+                ans = temp->smallest_index;
+            } else {
+                break;
+            }
+        }
+        return ans == -1 ? smallest_index : ans;
+    }
+
+
+
+    void insert(string& word, int& index) {
+        TrieNode* temp = root;
+        int len = word.length();
+        if (len < smallest_length) {
+            smallest_length = len;
+            smallest_index = index;
+        }
+        for (int i = word.length() - 1; i >= 0; --i) {
+            if (temp->children[word[i] - 'a'] == NULL) {
+                temp->children[word[i] - 'a'] = new TrieNode();
+            }
+            temp = temp->children[word[i] - 'a'];
+            if (len < temp->smallest_length) {
+                temp->smallest_length = len;
+                temp->smallest_index = index;
+            }
+        }
+    }
+};

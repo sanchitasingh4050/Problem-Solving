@@ -1,0 +1,69 @@
+struct TrieNode {            // easy peasy
+    TrieNode* child[2];
+
+    bool containsKey(int bit) {
+        return (child[bit] != NULL); }
+    
+
+    void put(int bit, TrieNode* node) {
+        child[bit] = node;
+    }
+
+    TrieNode* get(int bit) {
+        return child[bit];
+    }
+};
+
+
+class Trie {
+private:
+    TrieNode* root;
+
+public:
+    Trie() {
+        root = new TrieNode();
+    }
+
+    void insert(int num) {
+        TrieNode* node = root;
+        for(int i=31 ; i>=0 ; i--) {
+            int bit = (num>>i) & 1;
+            if(!node->containsKey(bit)) {
+                node->put(bit,new TrieNode());
+            }
+            node = node->get(bit);
+        }
+    }
+    int getMax(int num) {
+        TrieNode* node = root;
+        int maxNum = 0;
+
+        for(int i=31 ; i>=0 ; i--) {
+            int bit = (num>>i) & 1;
+            if(node->containsKey(1-bit)) { //to check if complement exists or not
+                maxNum = maxNum | (1<<i);//for maxNum to make the respective bit 1 
+                node = node->get(1-bit);
+            }
+            else {                    //otherwise
+                node = node->get(bit);//maxNum will remain unchanged, as its corresponding bit will be 0 by default.
+            }
+        }
+        return maxNum;
+    }
+};
+class Solution {
+public:
+    int findMaximumXOR(vector<int>& nums) {
+       Trie trie;
+        for(auto &e:nums) {
+            trie.insert(e);
+        }
+
+        int maxi = 0;
+        for(auto &e:nums) {
+            maxi = max(maxi,trie.getMax(e));
+        }
+        return maxi;
+    } 
+    
+};

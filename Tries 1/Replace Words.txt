@@ -1,0 +1,85 @@
+class TrieNode{  // esay peasy
+    public:
+    bool is_end;
+    TrieNode* child[26];
+
+    TrieNode()
+    {
+        is_end = false;
+        for(int i = 0;i<26;i++)
+        {
+            child[i] = NULL;
+        }
+        
+    }
+};
+
+
+class Trie
+{
+    public:
+    TrieNode* root;
+    Trie(){
+        root = new TrieNode;
+    }
+    void insert( string word )//inserting every word of the dictionary
+    {
+    TrieNode *node = root;
+    for(auto i: word)
+    {
+        if(node->child[i - 'a']== NULL)
+        {
+            node->child[i-'a']  = new TrieNode();
+        }
+        node = node->child[i-'a'];
+    }
+    node->is_end = true;
+}
+
+
+ string search(string word)
+ {
+    TrieNode *node = root;
+    if(node->child[word[0]-'a']==NULL){ return word; }
+
+    string res = "";
+    for(auto i: word)
+    {
+        if(node->is_end==true)      //if the word got ended then simply break and return that word
+        break;
+
+        if(node->child[i-'a']== NULL)      // if no such word in trie exists
+        {
+            return word;                  //simply return the word of the sentence
+        }
+        res += i;                        //adding each character in the result/ answer word
+        node = node->child[i-'a'];
+    } 
+    return res;
+  }
+
+};
+
+
+class Solution {
+public:
+    string replaceWords(vector<string>& dictionary, string sentence) {
+      Trie *root = new Trie;
+
+        for(auto i: dictionary)       //to insert each word in the string
+        
+            root->insert(i);
+        }
+
+        string word;
+        istringstream iss(sentence);
+        string res = "";
+        while(getline(iss,word,' '))   //to get each word in the sensence 
+        {
+
+            res = res +root->search(word) + " ";  //to search if the word exists in the dictionary
+        }
+        res.pop_back();//to remove the extra space
+        return res;   
+    }
+};
