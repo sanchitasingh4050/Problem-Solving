@@ -1,0 +1,36 @@
+class Solution {   //easy peasy
+public:
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+                                            
+                                                // we need to Create an adjacency list
+        vector<vector<int>> adj(n);
+        for (auto& edge : edges) {
+            adj[edge[0]].push_back(edge[1]);
+            adj[edge[1]].push_back(edge[0]);   // Since it's an undirected graph
+        }
+        
+                                       // Perform BFS to check if there is a valid path from source to destination
+        vector<bool> vis(n,false);
+        queue<int> q;
+        q.push(source);
+        vis[source] = true;
+        
+        while (!q.empty()) {
+            int current = q.front();
+            q.pop();
+            
+            if (current == destination) {
+                return true;                // Found a valid path
+            }
+            
+            for (int it : adj[current]) {   //to iterate over neighbor nodes of current node
+                if (vis[it]==false) {
+                    vis[it] = true;
+                    q.push(it);
+                }
+            }
+        }
+        
+        return false;      // No valid path found //or in case of disconnected graphs
+    }
+};

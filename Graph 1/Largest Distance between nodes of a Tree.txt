@@ -1,0 +1,42 @@
+int dfs(int node, vector<int> adj[], int &res) {
+    if (adj[node].empty()) {                      // Base case: leaf node
+        return 0;
+    }
+
+    int maxDepth = 0;                  // Maximum depth from the current node to leaf node
+    int secondMaxDepth = 0;            // Second maximum depth from the current node to leaf node
+    
+    for (auto &i: adj[node]) {
+        int depth = dfs(i, adj, res) + 1; // Depth of the subtree rooted at node 'i'
+        
+        if (depth > maxDepth) {  
+            secondMaxDepth = maxDepth;
+            maxDepth = depth;
+        } 
+        else if (depth > secondMaxDepth) {
+            secondMaxDepth = depth;
+        }
+    }
+    
+    res = max(res, maxDepth + secondMaxDepth);  // Update res with the sum of maxDepth and secondMaxDepth
+    return maxDepth;                            // Return the maximum depth from the current node to leaf node
+}
+
+int Solution::solve(vector<int> &A) {
+    int n = A.size();
+    vector<int> adj[n];
+    int root = 0;
+    
+    for (int i = 0; i < n; i++) {
+        if (A[i] != -1) {
+            adj[A[i]].push_back(i);
+        } else {
+            root = i;
+        }
+    }
+
+    int res = 0;
+    dfs(root, adj, res);
+    
+    return res;
+}
