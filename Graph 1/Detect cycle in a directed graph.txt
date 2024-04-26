@@ -1,0 +1,28 @@
+class Solution {                 //easy peasy
+public:
+    bool dfs(int node, vector<int> adj[], vector<int>& visited, vector<int>& recStack) {
+        visited[node] = 1;      // Mark node as visited
+        recStack[node] = 1;     // Add node to recursion stack
+
+        for (const auto& neighbor : adj[node]) {
+            if (visited[neighbor]==false && dfs(neighbor, adj, visited, recStack))
+                return true;
+            else if (recStack[neighbor]) // Cycle detected
+                return true;
+        }
+
+        recStack[node] = 0; // Remove node from recursion stack
+        return false;
+    }
+
+    bool isCyclic(int V, vector<int> adj[]) {
+        vector<int> visited(V, 0);   // Track visited nodes
+        vector<int> recStack(V, 0);  // Track nodes in recursion stack
+
+        for (int i = 0; i < V; ++i) {
+            if (!visited[i] && dfs(i, adj, visited, recStack))
+                return true; // Cycle found
+        }
+        return false; // No cycle found
+    }
+};

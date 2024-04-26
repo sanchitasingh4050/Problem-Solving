@@ -1,0 +1,16 @@
+class Solution {                            //easy peasy
+public:
+        vector<int> findSmallestSetOfVertices(int n, vector<vector<int>>& edges) {
+        vector<int> res, visited(n);        //This line declares two vectors res & visited
+
+        for (auto& e: edges)                //mark nodes with 1 who have incoming nodes towards them
+            visited[e[1]] = 1;
+
+        for (int i = 0; i < n; ++i)
+            if (visited[i] == 0)           //means no incoming nodes so it should be included in our answer cause their must me some outgoing nodes
+                res.push_back(i);
+        return res;
+
+        
+    }
+};
