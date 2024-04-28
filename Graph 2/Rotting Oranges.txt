@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {   //easy peasy
+         int n=grid.size();
+         int m=grid[0].size();
+         vector<int> dir={-1,0,1,0,-1};
+         int fresh =0;
+
+         queue<pair<pair<int,int>,int>>q;     //row & col of cell and time to store info about rotten orange
+        
+         for(int i=0;i<n;i++){
+             for(int j=0;j<m;j++){
+                 if(grid[i][j]==2){
+                     q.push({{i,j},0});       //initially the cells which have rotten oranges
+                  }
+                 else if(grid[i][j]==1){ fresh++;}   //count of fresh oranges
+             }
+         }
+
+         int time=0;
+        
+         while(!q.empty()){ //to traverse neighbors of rotten oranges
+             int r=q.front().first.first;   //row
+             int c=q.front().first.second;  //col
+             int t=q.front().second; //time
+             t=t+1; //for next elements of the queue the time increases // if no neighbors, we return the prev time we stored
+             q.pop();
+
+             for(int i=0;i<4;i++){
+                 int nrow= r + dir[i];
+                 int ncol= c + dir[i+1];
+                 if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && grid[nrow][ncol]==1 ){ // boundary conditions
+                    
+                     q.push({{nrow,ncol},t});
+                     grid[nrow][ncol]=2;
+                     fresh--;
+                     time=t; //assign the time only if it is a valid cell
+                 }
+             }
+             
+             
+         }
+        if(fresh>0) return -1;       //if fresh>0 that means there are fresh oranges left
+        return time;
+        
+
+    }
+};

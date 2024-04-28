@@ -1,0 +1,34 @@
+class Solution {//easy peasy
+public:
+    void DFS(vector<vector<char>>& grid, int i, int j) {
+        if(i < 0 || i >= grid.size() || j < 0 || j >= grid[0].size()) // boundary condition checking
+            return;
+        // returning if current position is water or is already visited
+        if(grid[i][j] == '2' || grid[i][j] == '0')
+            return;
+        
+        // mark the current as visited
+        grid[i][j] = '2';
+        
+        // checking all 4 directions
+        DFS(grid, i+1, j);
+        DFS(grid, i, j-1);
+        DFS(grid, i-1, j);
+        DFS(grid, i, j+1);
+    }
+    
+    int numIslands(vector<vector<char>>& grid) {//all connected 1's are treated as a single gropu of islands
+        int islands = 0;
+        // We make each 1 as 2 in when it is visited
+        for(int i = 0; i < grid.size(); i++) {
+            for(int j = 0; j < grid[0].size(); j++) {
+                // DFS in case any 1 has not been visited and there is land i.e 1
+                if(grid[i][j] == '1') {
+                    DFS(grid, i, j);
+                    ++islands;//after traversing all connected components
+                } 
+            }
+        }
+        return islands;
+    }
+};
