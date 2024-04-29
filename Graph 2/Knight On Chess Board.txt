@@ -1,0 +1,50 @@
+
+int Solution::knight(int A, int B, int C, int D, int E, int F) {//easy peasy
+   
+   // Initializing a visited vector to keep track of visited cells
+
+    vector<vector<bool>> visited(A + 1, vector<bool>(B + 1, false));
+    
+    vector<vector<int>> directions = {{-2, -1}, {-1, -2}, {1, -2}, {2, -1},
+                                  {2, 1}, {1, 2}, {-1, 2}, {-2, 1}};
+    
+    // Initialize a queue for BFS traversal
+
+    queue<pair<int, int>> q;
+    q.push({C, D}); // Enqueue the source cell
+    visited[C][D] = true; // Mark the source cell as visited
+    
+    // Initialize the number of moves
+
+    int moves = 0;
+    
+    // Performing BFS traversal
+
+    while (!q.empty()) {
+        int size = q.size();
+
+        // Process all cells at the current level
+
+        for (int i = 0; i < size; ++i) {
+            auto [r, c] = q.front();
+            q.pop();
+
+            // Check if we have reached the destination
+
+            if (r == E && c == F) return moves;
+
+            // Explore all possible moves of the knight //checking all directions
+            for (auto& dir : directions) {
+                int nrow = r + dir[0], ncol = c + dir[1];
+
+                // Check if the new cell is within the bounds and not visited // boundary condition
+                if (nrow >= 1 && nrow <= A && ncol >= 1 && ncol <= B && !visited[nrow][ncol]) {
+                    q.push({nrow, ncol});                   // Enqueue the new cell
+                    visited[nrow][ncol] = true;             // Mark the new cell as visited
+                }
+            }
+        }
+        ++moves; // Increment the number of moves
+    }
+    return -1; // incase we can't reach destination
+}
