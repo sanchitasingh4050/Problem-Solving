@@ -1,0 +1,51 @@
+
+class Solution {// easy peasy
+public:
+    vector<vector<int>> nearest(vector<vector<int>>& grid) {
+        int rows = grid.size();
+        int cols = grid[0].size();
+
+       // rows: This is the number of rows in the grid. 
+       //We initialize result with rows as no. of rows.
+       //vector<int>(cols, INT_MAX): This initializes each row with a vector of 
+       //integers with cols columns, where each cell is initialized with the value INT_MAX.
+        
+        vector<vector<int>> result(rows, vector<int>(cols, INT_MAX)); // Initialize result matrix with maximum values
+        
+        queue<pair<int, int>> q;
+        
+        // Push all cells with 1s into the queue and mark their distances as 0
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                if (grid[i][j] == 1) {
+                    q.push(make_pair(i, j));
+                    result[i][j] = 0;
+                }
+            }
+        }
+        
+        // Define directions for BFS traversal (up, down, left, right)
+        vector<int> dir = {-1, 0, 1, 0, -1};
+        
+        // Perform BFS traversal
+        while (!q.empty()) {
+            int r = q.front().first;
+            int c = q.front().second;
+            q.pop();
+            
+            // Traverse in all four directions
+            for (int k = 0; k < 4; ++k) {
+                int nrow = r + dir[k];
+                int ncol = c + dir[k+1];
+                
+                // Check if the neighboring cell is within bounds and its distance is greater than the current distance plus 1 (boundary conditions)
+                if (nrow >= 0 && nrow < rows && ncol >= 0 && ncol < cols && result[nrow][ncol] > result[r][c] + 1) {
+                    result[nrow][ncol] = result[r][c] + 1; // Update the distance //we don't need to use the formula
+                    q.push(make_pair(nrow, ncol)); // Push the updated cell into the queue
+                }
+            }
+        }
+        
+        return result;
+    }
+};
