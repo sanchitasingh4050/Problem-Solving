@@ -1,0 +1,46 @@
+class Solution {
+private:
+    bool dfsCheck(int course, vector<int> adj[], vector<int>& visited, vector<int>& pathVisited) {//easy peasy
+        visited[course] = 1;
+        pathVisited[course] = 1;
+
+                                               // Traverse for adjacent courses
+        for (auto prereq : adj[course]) {
+                                               // When the course is not visited
+            if (visited[prereq]==0) {
+                if (dfsCheck(prereq, adj, visited, pathVisited))
+                    return true;
+            }
+                                              // If the course has been previously visited but it has to be visited on the same path
+            else if (pathVisited[prereq]==1) {
+                return true; //cycle
+            }
+        }
+
+        pathVisited[course] = 0;
+        return false;
+    }
+
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+                                             // Create adjacency list for courses
+        vector<int> adj[numCourses];
+        for (auto pre : prerequisites) {
+            adj[pre[0]].push_back(pre[1]);   // Add prerequisite -> course edge
+        }
+
+        vector<int> visited(numCourses, 0);     // Initialize visited array to track course visits
+        vector<int> pathVisited(numCourses, 0); // Initialize array to track visited courses in the current path
+
+                                                                
+        for (int course = 0; course < numCourses; ++course) {
+            if (!visited[course]) {
+                if (dfsCheck(course, adj, visited, pathVisited)==true) 
+                    return false;                                // Cycle detected, cannot finish all courses
+            }
+        }
+
+        return true;                           // No cycle detected, can finish all courses
+    }
+};
+

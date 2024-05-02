@@ -1,0 +1,46 @@
+class Solution{ //easy peasy
+    public:
+        int minimumEdgeReversal(vector<vector<int>> &edges,int n,int src,int dst)
+        {
+            src--;
+            dst--;
+            priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+            pq.push({0,src});
+            vector<vector<int>> adj(n);
+            vector<vector<int>> rev(n);
+            for(auto it:edges)
+            {
+                adj[it[0]-1].push_back(it[1]-1); //subtracted 1 to adjust for 0-based indexing. 
+                rev[it[1]-1].push_back(it[0]-1);
+            }
+            set<pair<int,int>> vis;
+            vis.insert({src,1});//for forward direction
+            vis.insert({src,2});//for reverse direction
+            while(pq.size())//priority having smallest dist/cost node first
+            {
+                auto it=pq.top();
+                pq.pop();
+                int node=it.second;
+                int cost=it.first;
+                if(node==dst) //reached destination
+                return cost;
+                for(auto it:adj[node])
+                {
+                    if(vis.find({it,1})==vis.end())//if node is not visited
+                    {
+                        vis.insert({it,1}); //insert that node in vis set
+                        pq.push({cost,it}); //then insert in pq // no change in cost
+                    }
+                }
+                for(auto it:rev[node])
+                {
+                    if(vis.find({it,2})==vis.end())
+                    {
+                        vis.insert({it,2});
+                        pq.push({cost+1,it});//cost+1 //dist=2 it reaching a node by reversing other nodes
+                    } //
+                }
+            }
+            return -1;
+        }
+};
