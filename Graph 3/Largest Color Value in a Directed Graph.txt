@@ -1,0 +1,52 @@
+class Solution {
+public:
+    int largestPathValue(string colors, vector<vector<int>>& edges) { //easy peasy
+        int n = colors.size();
+        vector<vector<int>> adj(n);
+        vector<int> indegree(n, 0);
+        vector<vector<int>> color(n, vector<int>(26, 0));  // DP array to store color counts
+        
+                                                           // Build the graph and calculate indegrees
+        for (const auto& edge : edges) {
+            adj[edge[0]].push_back(edge[1]);
+            indegree[edge[1]]++;
+        }
+        
+                                                    // Perform topological sort using BFS
+        queue<int> q;
+        for (int i = 0; i < n; ++i) {
+            if (indegree[i] == 0) {
+                q.push(i);
+            }
+        }
+        
+        int maxColorCount = 0;                      //answer //freq of max occuring color
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+            
+                                                   // Update color count for the current node
+            color[node][colors[node] - 'a']++;
+            maxColorCount = max(maxColorCount, color[node][colors[node] - 'a']);
+            
+                                                  // Update color count using the neighbors' counts
+            for (int neighbor : adj[node]) {
+                for (int i = 0; i < 26; ++i) {
+                    color[neighbor][i] = max(color[neighbor][i], color[node][i]);
+                }
+                if (--indegree[neighbor] == 0) {  //topo sort for cycle detection, hehe
+                    q.push(neighbor);
+                }
+            }
+        }
+        
+                                              // If there is a node with indegree > 0, it means there is a cycle
+        for (int i = 0; i < n; ++i) {
+            if (indegree[i] > 0) {
+                return -1;
+            }
+        }
+        
+        return maxColorCount;       //otherwise return max color count
+    }
+};

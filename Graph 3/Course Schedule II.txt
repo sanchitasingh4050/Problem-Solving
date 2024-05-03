@@ -1,0 +1,44 @@
+class Solution {//easy peasy //using topo sort
+public:
+void dfs(int current, const vector<vector<int>>& adj, vector<int>& result, vector<int>& indegree) {
+        // Add the current course to the result
+        result.push_back(current);
+        // Mark the current course as visited
+        indegree[current] = -1;
+        
+        // Visit all next courses with indegree 0
+        for (auto nextCourse : adj[current]) {
+            if (--indegree[nextCourse] == 0) {
+                dfs(nextCourse, adj, result, indegree); // Recursively call DFS for next course
+            }
+        }
+    }
+
+
+vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> adj(numCourses);
+        vector<int> result;
+        vector<int> indegree(numCourses);
+        
+        // Build the graph and calculate indegrees
+        for (auto& prereq : prerequisites) {
+            adj[prereq[1]].push_back(prereq[0]);
+            indegree[prereq[0]]++;
+        }
+        
+        // DFS traversal function
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) {
+                dfs(i, adj, result, indegree); // Start DFS from courses with indegree 0
+            }
+        }
+        
+        // Check if all courses are included in the result
+        if (result.size() == numCourses) {
+            return result;
+        } else {
+            return {}; // Return empty vector if not all courses can be taken
+        }
+    }
+   
+};

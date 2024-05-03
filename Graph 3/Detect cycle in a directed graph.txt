@@ -1,0 +1,27 @@
+class Solution {//easy peasy
+public:
+    bool dfs(int node, vector<int> adj[], vector<int>& visited, vector<int>& pathvisited) {
+        visited[node] = 1;        // Mark node as visited
+        pathvisited[node] = 1;    // visited that path
+
+        for (const auto& neighbor : adj[node]) {                                //checking neighbors recursively
+            if (visited[neighbor]==0 && dfs(neighbor, adj, visited, pathvisited)==true)
+                return true;
+            else if (pathvisited[neighbor]==1)       //we visited that path earlier // Cycle detected
+                return true;
+        }
+
+        pathvisited[node] = 0;                // unvisit it to visit again
+        return false;
+    }
+
+    bool isCyclic(int V, vector<int> adj[]) {
+        vector<int> visited(V, 0);            // Track visited nodes
+        vector<int> pathvisited(V, 0);        // Track the path
+
+        for (int i = 0; i < V; ++i) {
+            if (visited[i]==0 && dfs(i, adj, visited, pathvisited)==true)
+                return true;                 // Cycle found
+        }
+        return false;                        // No cycle found
+    }

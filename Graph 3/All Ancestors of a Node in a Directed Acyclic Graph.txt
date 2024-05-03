@@ -1,0 +1,30 @@
+class Solution {//easy peasy
+public:
+    void dfs(vector<vector<int>> &adj, int i, int j, vector<vector<int>> &ans, vector<bool> &vis) {
+    vis[j] = true; // Mark node j as visited
+   
+    if (adj[j].empty()) {
+        return;
+    }
+    for (auto &x : adj[j]) { 
+        if (vis[x] == false) { 
+            ans[x].push_back(i); // Add node i as an ancestor of node x
+            dfs(adj, i, x, ans, vis); // Recursively explore the adjacent node x
+        }
+    }
+}
+
+    vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges) {
+        
+        vector<vector<int>>ans(n);
+        vector<vector<int>>adj(n);
+        for(auto &v:edges){ //for each vertex in the edge
+            adj[v[0]].push_back(v[1]); //direction from v[0] to v[1]
+        }
+        for(int i=0;i<n;i++){
+            vector<bool> vis(n,false); 
+            dfs(adj,i,i,ans,vis);
+        }
+        return ans;
+    }
+};
