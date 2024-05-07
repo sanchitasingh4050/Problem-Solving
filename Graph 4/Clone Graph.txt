@@ -1,0 +1,27 @@
+class Solution {
+public:
+    Node* cloneGraph(Node* node) {
+        if (!node)
+            return nullptr;
+        
+        unordered_map<Node*, Node*> visited;
+        return cloneNode(node, visited);
+    }
+    
+    Node* cloneNode(Node* node, unordered_map<Node*, Node*>& visited) {
+                                                      // If the node is already visited, return its clone
+        if (visited.find(node) != visited.end())
+            return visited[node];
+        
+                                                       // Creating a new clone node
+        Node* clone = new Node(node->val);
+        visited[node] = clone;
+        
+                                                     // Recursively cloning its neighbors
+        for (Node* neighbor : node->neighbors) {
+            clone->neighbors.push_back(cloneNode(neighbor, visited));
+        }
+        
+        return clone;
+    }
+};

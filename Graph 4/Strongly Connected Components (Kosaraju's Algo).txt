@@ -1,0 +1,55 @@
+class Solution{ //easy peasyy
+public:
+    void dfs(int node, vector<int> &vis, vector<vector<int>> &adj, stack<int> &st) {
+        vis[node] = 1;
+        for (auto it : adj[node]) {
+            if (!vis[it]) {
+                dfs(it, vis, adj, st);
+            }
+        }
+                            //imp step, adds node in ascending order according to finishing time
+        st.push(node);      //makes sure the first node is added in the last// backtracking
+    }
+
+    void dfs3(int node, vector<int> &vis, vector<vector<int>> &adjT) {//simple dfs
+        vis[node] = 1;
+        for (auto it : adjT[node]) {
+            if (vis[it]==0) {
+                dfs3(it, vis, adjT); //recursively calling dfs
+            }
+        }
+    }
+
+    //given Function to find number of strongly connected components in the graph.
+    int kosaraju(int V, vector<vector<int>>& adj)
+    {
+        vector<int> vis(V, 0);
+        stack<int> st;
+        for (int i = 0; i < V; i++) {
+            if (!vis[i]) {
+                dfs(i, vis, adj, st);
+            }
+        }
+
+        vector<vector<int>> adjT(V);    //to reverse edges & then store nodes
+        for (int i = 0; i < V; i++) {
+            vis[i] = 0;                 //using the same visited array so make it 0
+            for (auto it : adj[i]) {
+
+                adjT[it].push_back(i);      // i -> it //given in adj list
+                                           // it -> i //reversing the edges
+            }
+        } 
+        
+        int scc = 0; //strongly connected component
+        while (!st.empty()) {
+            int node = st.top();           //first element to start the dfs
+            st.pop();
+            if (vis[node]==0) {
+                scc++;                    //each dfs call refers to no. of scc
+                dfs3(node, vis, adjT);
+            }
+        }
+        return scc;                         //answer
+    }
+};

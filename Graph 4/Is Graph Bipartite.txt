@@ -1,0 +1,38 @@
+class Solution {//easy peasy
+public:
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n = graph.size();
+        vector<int> colors(n, -1);            // -1 represents uncolored, 0 and 1 represent colors
+        
+        for (int i = 0; i < n; ++i) {
+            if (colors[i] == -1) {             // Node hasn't been colored yet
+                if (!bfs(graph, colors, i))    // Start BFS from uncolored node
+                    return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    bool bfs(vector<vector<int>>& graph, vector<int>& colors, int start) {
+        queue<int> q;
+        q.push(start);
+        colors[start] = 0;                   // Color the starting node
+        
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+            
+            for (int neighbor : graph[node]) {
+                if (colors[neighbor] == -1) {             // Neighbor hasn't been colored yet
+                    colors[neighbor] = 1 - colors[node];  // Assign opposite color
+                    q.push(neighbor);
+                } else if (colors[neighbor] == colors[node]) { // Neighbor has same color
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+};
