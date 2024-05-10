@@ -1,0 +1,58 @@
+class Solution {
+public:
+    int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
+                                                                           // Creating adjacency matrix for the given graph
+        vector<vector<int>> adjacencyMatrix(n, vector<int>(n, INT_MAX));
+
+                                                            // Initializing diagonal elements to 0
+        for(int i = 0; i < n; i++){
+            adjacencyMatrix[i][i] = 0;
+        }
+
+                                                             // Filling adjacency matrix with edge weights
+        for(auto edge : edges){
+            int u = edge[0];
+            int v = edge[1];
+            int w = edge[2];
+
+            adjacencyMatrix[u][v] = w;
+            adjacencyMatrix[v][u] = w;
+        }
+
+                                              // Calculating shortest paths between all pairs of nodes (Floyd Warshall algorithm)
+        for(int k = 0; k < n; k++){
+            for(int i = 0; i < n; i++){
+                for(int j = 0; j < n; j++){
+                    if(adjacencyMatrix[i][k] == INT_MAX || adjacencyMatrix[k][j] == INT_MAX){
+
+                        continue;              // Skip if there is no path between i and j via k
+                    }
+                    else {
+                                               // Update shortest path between i and j via k
+
+                        adjacencyMatrix[i][j] = min(adjacencyMatrix[i][j], adjacencyMatrix[i][k] + adjacencyMatrix[k][j]);
+                    }
+                }
+            }
+        }
+
+                                          // Find the city with the minimum number of reachable cities within the distance threshold
+        int city = 0;                     // Assume the first city initially
+        int minReachableCities = INT_MAX; // Initializing with maximum value
+        for(int i = 0; i < n; i++){
+            int reachableCities = 0;
+            for(int j = 0; j < n; j++){
+                if(i != j && adjacencyMatrix[i][j] <= distanceThreshold){
+                                          // Counting the number of reachable cities within the distance threshold
+                    reachableCities++;
+                }
+            }
+                                              // Update the city if it has fewer reachable cities
+            if(minReachableCities >= reachableCities){
+                city = i;
+                minReachableCities = reachableCities;
+            }
+        }
+        return city;
+    }
+};

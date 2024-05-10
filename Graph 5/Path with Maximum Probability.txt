@@ -1,0 +1,48 @@
+class Solution {
+public:
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start_node, int end_node) {
+        if (n == 0) return 0.0;
+
+        vector<vector<pair<int, double>>> adj(n);
+
+        // Creating adjacency list
+        for (int i = 0; i < edges.size(); ++i) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            double weight = succProb[i];
+
+            adj[u].push_back({v, weight});
+            adj[v].push_back({u, weight});
+        }
+
+        vector<double> prob(n, 0.0);
+        prob[start_node] = 1.0;
+
+        priority_queue<pair<double, int>> pq;    // negative probability, node
+        pq.push({1.0, start_node});
+
+        while (!pq.empty()) {
+            auto top = pq.top();
+            pq.pop();
+
+            double nodeProb = top.first;
+            int nodeVal = top.second;
+
+            if (nodeVal == end_node) return nodeProb;
+
+            for (auto nbr : adj[nodeVal]) {
+                int nbrVal = nbr.first;
+                double nbrProb = nbr.second;
+
+                double newProb = nodeProb * nbrProb;
+
+                if (newProb > prob[nbrVal]) {
+                    prob[nbrVal] = newProb;
+                    pq.push({newProb, nbrVal});
+                }
+            }
+        }
+
+        return 0.0;  
+    }
+};
