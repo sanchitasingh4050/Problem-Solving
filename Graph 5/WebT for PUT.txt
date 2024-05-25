@@ -1,0 +1,157 @@
+
+SECTION A
+
+(a)
+
+Question: Explain the concept of client and server. Also describe how a Web Server is different from normal server.
+Answer:
+Client and Server: In networking, a client is a program or device that requests services or resources from another program or device called a server. The client-server model is a distributed application structure that partitions tasks or workloads between the providers of a resource or service, called servers, and service requesters, called clients.
+Web Server vs Normal Server: A web server specifically handles HTTP requests and serves web pages, while a normal server can handle various types of requests and services, not limited to web-related tasks. Web servers typically store and deliver web pages, while normal servers can handle a wide range of tasks including file storage, email, databases, etc.
+(b)
+
+Question: Differentiate between HTTP and HTTPS.
+Answer:
+HTTP (Hypertext Transfer Protocol): It is the foundation of data communication on the World Wide Web. It is a protocol used for transmitting hypermedia documents, such as HTML.
+HTTPS (Hypertext Transfer Protocol Secure): It is a secure version of HTTP that uses encryption to secure the connection between the client and server. HTTPS is used to protect sensitive information such as login credentials and payment details.
+(c)
+
+Question: Differentiate between internet and WWW.
+Answer:
+Internet: The internet is a global network of networks that connects millions of computers worldwide. It allows communication and the exchange of data between devices across the globe.
+WWW (World Wide Web): The WWW is an information space where documents and other web resources are identified by URLs, interlinked by hypertext links, and accessible via the Internet. It is a subset of the internet and provides a user-friendly interface for accessing information.
+(d)
+
+Question: Compare Internet services with protocols.
+Answer:
+Internet Services: Internet services refer to various services provided over the internet, including email, web browsing, file transfer (FTP), remote login (Telnet), etc.
+Protocols: Protocols are rules and conventions for communication between network devices. Examples include HTTP for web browsing, SMTP for email, FTP for file transfer, etc.
+(e)
+
+Question: Discuss the history of WWW in brief.
+Answer:
+History of WWW: The World Wide Web (WWW) was invented by Sir Tim Berners-Lee in 1989 while working at CERN. He proposed a decentralized system of information management to facilitate sharing and accessing documents over the internet. The first website was created in 1991, and the WWW rapidly evolved to become a global platform for information exchange and collaboration.
+(f)
+
+Question: Compare Java Class and Interface.
+Answer:
+Java Class vs Interface:
+A Java class is a blueprint for creating objects. It can contain fields, methods, constructors, etc., and can be instantiated to create objects.
+An interface in Java is a reference type that can contain only abstract methods, default methods, static methods, and constant fields. It provides a way to achieve abstraction and multiple inheritance.
+(g)
+
+Question: Write a Simple program in Java to create an Applet able display "Hello World" message upon execution.
+Answer:
+java
+Copy code
+import java.applet.Applet;
+import java.awt.Graphics;
+
+public class HelloWorldApplet extends Applet {
+    public void paint(Graphics g) {
+        g.drawString("Hello, World!", 20, 20);
+    }
+}
+(h)
+
+Question: Differentiate between threads created by Thread class and Runnable interface.
+Answer:
+Threads created by Thread class: Threads created by extending the Thread class in Java need to override the run() method to define the task of the thread. Each instance of the subclass represents a separate thread of execution.
+Threads created by Runnable interface: Threads created by implementing the Runnable interface require implementing the run() method. This approach allows a class to extend another class and implement multiple interfaces, promoting better code organization and reusability.
+(i)
+
+Question: Describe classes and objects
+Answer:
+Classes: Classes in Java are blueprints for creating objects. They encapsulate data for the object and define methods to operate on that data.
+Objects: Objects are instances of classes. They have state (attributes) and behavior (methods) defined by their class.
+(j)
+
+Question: Describe Classes and object in Java. Describe the relationship with suitable real-world examples, Discuss concept of layouts and their types in AWT.
+Answer:
+Classes and Objects in Java: In Java, a class is a blueprint for creating objects, while an object is an instance of a class. For example, a class "Car" can define attributes like "color" and "model" and methods like "startEngine()" and "drive()". An object of the "Car" class would represent a specific car with its color, model, and behavior.
+Layouts in AWT: Layouts in AWT (Abstract Window Toolkit) are used to arrange components within containers. Common layout managers include BorderLayout, FlowLayout, GridLayout, etc.
+(k)
+
+Question: Differentiate between Border Layout and Flow layout
+Answer:
+BorderLayout: BorderLayout is a layout manager in Java AWT that divides the container into five regions: north, south, east, west, and center. Components can be added to these regions using appropriate constraints.
+FlowLayout: FlowLayout is a layout manager that arranges components from left to right, wrapping to the next line if necessary. It does not control the size or position of components, making it useful for simple GUI designs.
+SECTION B
+
+(a)
+
+Question: Illustrate the concept of multi-threading. Write a code in Java to create three threads having name Red, Blue and Green. Justify why should we use run() method instead of start() to launch a Thread.
+Answer:
+Multi-Threading: Multi-threading is a programming concept that allows multiple threads of execution to run concurrently within a single process. It enables applications to perform multiple tasks simultaneously and efficiently utilize system resources.
+Java Thread Example:
+java
+Copy code
+class MyThread extends Thread {
+    public void run() {
+        System.out.println(Thread.currentThread().getName() + " is running");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        MyThread red = new MyThread();
+        MyThread blue = new MyThread();
+        MyThread green = new MyThread();
+        
+        red.setName("Red");
+        blue.setName("Blue");
+        green.setName("Green");
+        
+        red.start();
+        blue.start();
+        green.start();
+    }
+}
+We should use the run() method instead of start() to launch a thread because calling start() invokes a new thread of execution, while calling run() directly does not create a new thread and runs the method in the current thread's context.
+(b)
+
+Question: Discuss the applications of XML. Also compare XSD and DTD.
+Answer:
+Applications of XML: XML (Extensible Markup Language) is widely used for data storage, configuration files, web services, and data interchange between systems. It provides a structured way to represent and exchange data that is both human-readable and machine-understandable.
+XSD vs DTD:
+XSD (XML Schema Definition) is an XML-based schema language used to define the structure, content, and data types of XML documents. It provides more features and flexibility compared to DTD.
+DTD (Document Type Definition) is a simpler, older method for defining the structure of an XML document. It uses a less expressive syntax and lacks some of the advanced features of XSD.
+(c)
+
+Question: Describe <form> tag and its attributes. Also differentiate GET and POST methods.
+Answer:
+<form> Tag: The <form> tag in HTML is used to create an HTML form for user input. It defines an interactive control within a web page and specifies how the data entered into the form should be processed and sent to the server.
+GET vs POST Methods:
+GET: Sends form data as part of the URL query string. It is suitable for retrieving data from the server and has a limit on the amount of data that can be sent.
+POST: Sends form data in the body of the HTTP request. It is suitable for sending large amounts of data and sensitive information securely.
+(d)
+
+Question: Illustrate Java Beans and their properties in detail.
+Answer:
+Java Beans: Java Beans are reusable software components that adhere to certain conventions for properties, methods, and events. They are designed for easy integration into visual development tools and provide a standardized way to create and manage Java components.
+Properties of Java Beans:
+Properties: Represent the attributes or state of a bean.
+Methods: Define the behavior or functionality of a bean.
+Events: Enable communication between beans and handling of user actions.
+(e)
+
+Question: Explain the implicit and explicit objects in JSP. Describe request, response and session objects in detail.
+Answer:
+Implicit Objects in JSP: Implicit objects in JSP are Java objects automatically created by the JSP container and made available for use within JSP pages without the need for explicit declaration. Examples include request, response, session, application, etc.
+Explicit Objects in JSP: Explicit objects in JSP are objects created by the developer within JSP pages using scriptlets, expressions, or custom tags. They are declared and instantiated explicitly by the developer for specific purposes.
+SECTION C
+
+(a)
+
+Question: Outline the differences between Encapsulation and Abstraction. Illustrate with suitable example.
+Answer:
+Encapsulation vs Abstraction:
+Encapsulation: Encapsulation is the mechanism of wrapping data (variables) and code (methods) together as a single unit. It restricts direct access to data and prevents accidental modification, ensuring data integrity and security. Example: A class Employee encapsulates attributes like name, age, and methods like getSalary() and setSalary().
+Abstraction: Abstraction is the process of hiding the implementation details and showing only the essential features of an object. It allows the user to focus on what an object does rather than how it does it. Example: A car provides the abstraction of transportation without exposing its internal mechanisms.
+(b)
+
+Question: Describe method overriding in Java. Compare method overriding and method overloading with suitable example.
+Answer:
+Method Overriding in Java: Method overriding is a feature of object-oriented programming in which a subclass provides a specific implementation of a method that is already defined in its superclass. It allows a subclass to provide its own implementation of a method based on its specific requirements.
+Method Overloading vs Method Overriding:
+Method Overloading: Method overloading is a feature of Java that allows a class to have multiple methods with the same name but different parameters. It enables the creation of methods with the same name that perform different tasks based on the type or number of parameters.
+Method Overriding: Method overriding, as described above, involves providing a new implementation of a method in a subclass that is already defined in its superclass. It enables polymorphic behavior and dynamic method dispatch.

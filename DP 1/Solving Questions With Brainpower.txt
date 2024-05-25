@@ -1,0 +1,40 @@
+// Recursion
+/*
+class Solution {
+public:
+    long long maxPointsRecursion(vector<vector<int>>& questions, int index){
+        if(index >= questions.size()) return 0;
+        long long take = questions[index][0] + maxPointsRecursion(questions, index + questions[index][1] + 1);
+        long long notTake = 0 + maxPointsRecursion(questions, index + 1);
+        
+        return max(take, notTake);
+    }
+    
+    long long mostPoints(vector<vector<int>>& questions) {
+        return maxPointsRecursion(questions, 0);
+    }
+};
+
+*/
+
+ 
+//Memoization
+class Solution {
+public:
+    long long maxPointsMemoization(vector<vector<int>>& questions, int index, vector<long long> &dp){
+        if(index >= questions.size()) return 0;
+
+        if(dp[index] != 0) return dp[index];
+
+        long long take = questions[index][0] + maxPointsMemoization(questions, index + questions[index][1] + 1, dp);
+        long long notTake = 0 + maxPointsMemoization(questions, index + 1, dp);
+        
+        return dp[index] = max(take, notTake);
+    }
+    
+    long long mostPoints(vector<vector<int>>& questions) {
+        int n = questions.size();
+        vector<long long> dp(n, 0);
+        return maxPointsMemoization(questions, 0, dp);
+    }
+};

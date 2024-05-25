@@ -1,0 +1,85 @@
+// Recursion :
+class Solution {
+private:
+    int maxRobAmount(vector<int> &nums, int index) {
+        if (index == 0) return nums[0];
+        if (index < 0) return 0;
+
+        int pick = nums[index] + maxRobAmount(nums, index - 2);
+        int notPick = 0 + maxRobAmount(nums, index - 1);
+
+        return max(pick, notPick);
+    }
+public:
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        return maxRobAmount(nums, n - 1);
+    }
+};
+
+
+// Memoization :
+class Solution {
+private:
+    int maxRobAmount(vector<int> &nums, int index, vector<int> &dp) {
+        if (index < 0) return 0;
+        if (index == 0) return dp[0] = nums[0];
+
+        if (dp[index] != -1) return dp[index];
+
+        int pick = nums[index] + maxRobAmount(nums, index - 2, dp);
+        int notPick = 0 + maxRobAmount(nums, index - 1, dp);
+
+        return dp[index] = max(pick, notPick);
+    }
+public:
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n, -1);
+        return maxRobAmount(nums, n - 1, dp);
+    }
+};
+
+
+// Dynamic Programming :
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n, 0);
+
+        dp[0] = nums[0];
+
+        for (int i = 1; i < n; i++) {
+            if (i - 2 < 0) {
+                dp[i] = max(dp[i - 1], nums[i]);
+            } else {
+                dp[i] = max(dp[i - 1], nums[i] + dp[i - 2]);
+            }
+        }
+        return dp[n - 1];
+    }
+};
+
+
+// Space Optimized DP :
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        int prev1 = INT_MIN;
+        int prev2 = nums[0];
+
+        for (int i = 1; i < n; i++) {
+            int temp;
+            if (i - 2 < 0) {
+                temp = max(prev2, nums[i]);
+            } else {
+                temp = max(prev2, prev1 + nums[i]);
+            }
+            prev1 = prev2;
+            prev2 = temp;
+        }
+        return prev2;
+    }
+};
