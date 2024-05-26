@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int maxi = 1;  // Length of the longest increasing subsequence
+
+    int findNumberOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n, 1);  // Length of LIS ending at each index
+        vector<int> cnt(n, 1); // Count of LIS ending at each index
+
+        for (int i = 0; i < n; i++) {
+            for (int prev = 0; prev < i; prev++) {
+                if (nums[prev] < nums[i] && 1 + dp[prev] > dp[i]) {
+                    dp[i] = 1 + dp[prev];
+                    cnt[i] = cnt[prev];
+                } else if (nums[prev] < nums[i] && 1 + dp[prev] == dp[i]) {
+                    cnt[i] += cnt[prev];
+                }
+            }
+            maxi = max(maxi, dp[i]);
+        }
+
+        int numLIS = 0;
+        for (int i = 0; i < n; i++) {
+            if (dp[i] == maxi) {
+                numLIS += cnt[i];
+            }
+        }
+
+        return numLIS;
+    }
+};

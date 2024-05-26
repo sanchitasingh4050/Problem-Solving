@@ -1,0 +1,39 @@
+#include <bits/stdc++.h> 
+using namespace std; 
+
+// Function to maximize the given expression 
+int findMaxValue(int arr[], int size, int p, int q, int r) {
+ 
+    // Traverse the whole array and compute 
+    // left maximum for every index. 
+
+    int leftMax[size]; 
+    leftMax[0] = p * arr[0]; 
+    for (int i = 1; i < size; i++) 
+        leftMax[i] = max(leftMax[i - 1], p * arr[i]); 
+
+    // Computing right maximum for every index. 
+
+    int rightMax[size]; 
+    rightMax[size - 1] = r * arr[size - 1]; 
+    for (int i = size - 2; i >= 0; i--) 
+        rightMax[i] = max(rightMax[i + 1], r * arr[i]); 
+
+    // Traversing through the whole array to 
+    // maximize the required expression. 
+
+    int maxValue = INT_MIN; 
+    for (int i = 0; i < size; i++) 
+        maxValue = max(maxValue, leftMax[i] + q * arr[i] + rightMax[i]); 
+
+    return maxValue; 
+} 
+    
+
+int main() { 
+    int arr[] = {-1, -2, -3, -4, -5}; 
+    int size = sizeof(arr) / sizeof(arr[0]); 
+    int p = 1, q = 2, r = -3; 
+    cout << findMaxValue(arr, size, p, q, r) << endl; 
+    return 0; 
+} 

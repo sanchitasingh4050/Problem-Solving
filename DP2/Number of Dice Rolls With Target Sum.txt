@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int numRollsToTarget(int n, int k, int target) {
+        const int MOD = 1e9 + 7;
+        std::vector<std::vector<int>> dp(n + 1, std::vector<int>(target + 1, 0));
+        dp[0][0] = 1; // Base case: only one way to get sum 0 with 0 dice
+
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= target; ++j) {
+                dp[i][j] = 0; // Initializing
+                for (int x = 1; x <= k; ++x) {
+                    if (j >= x) {
+                        dp[i][j] = (dp[i][j] + dp[i - 1][j - x]) % MOD;
+                    }
+                }
+            }
+        }
+
+        return dp[n][target];
+    }
+};

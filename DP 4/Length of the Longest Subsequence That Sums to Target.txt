@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int lengthOfLongestSubsequence(vector<int>& nums, int target) {
+        // Initializing dp array where dp[i] is the length of the longest subsequence that sums to i
+        vector<int> dp(target + 1, -1);
+        dp[0] = 0;  // The length of the longest subsequence that sums to 0 is 0 (empty subsequence)
+        
+        // Traverse through each number in nums
+        for (int num : nums) {
+            // Update dp array from the end to the beginning
+            for (int sum = target; sum >= num; --sum) {
+                if (dp[sum - num] != -1) {
+                    dp[sum] = max(dp[sum], dp[sum - num] + 1);
+                }
+            }
+        }
+        
+        return dp[target];  // If dp[target] is -1, it means no subsequence sums to target
+    }
+};

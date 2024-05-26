@@ -1,0 +1,102 @@
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) { //using binary search // easy peasy!
+        vector<int> temp;
+        temp.push_back(nums[0]);
+        for(int i=1;i<nums.size();i++){
+            if(nums[i]>temp.back()){
+                temp.push_back(nums[i]);
+            }
+            else{
+                auto index= lower_bound(temp.begin(),temp.end(),nums[i]); //the lower_bound function returns an iterator, not an index. 
+                //so we use the iterator to access the position and then update the value at that position.
+                * index=nums[i]; //* index dereferences the iterator index and points to the location which we require
+            }                   //i.e the location at which the element is either greater than or equal to nums[i] and 
+        }                       //replace that position element with nums[i] in the temp vector;
+        
+        
+        return temp.size(); // Length of temp is the length of the LIS
+    }
+};
+
+/*class Solution {//easy peasy //using dp
+public:
+    int lengthOfLIS(std::vector<int>& nums) {
+        if (nums.empty()) return 0;
+        
+        int n = nums.size();
+        vector<int> dp(n, 1); // dp[i] stores the length of LIS ending at index i
+        
+        int maxLIS = 1; // Initialize maximum LIS to 1 (minimum possible)
+        
+        for (int i = 1; i < n; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (nums[i] > nums[j]) { //comparing with all other prev elements before i
+                    dp[i] = max(dp[i], dp[j] + 1); // dp[i] stores the length of LIS ending at index i
+                }
+            }
+            maxLIS = max(maxLIS, dp[i]); // Update maximum LIS
+        }
+        
+        return maxLIS;
+    }
+};
+*/
+
+
+/*class Solution { //recur+memo
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        unordered_map<string, int> memo; // Memoization map
+        return lengthOfLISRecursive(nums, -1, 0, memo);
+    }
+
+private:
+    int lengthOfLISRecursive(const vector<int>& nums, int prevIndex, int currentIndex, unordered_map<string, int>& memo) {
+        if (currentIndex >= nums.size())
+            return 0;
+
+        string key = to_string(prevIndex) + "-" + to_string(currentIndex);
+        if (memo.find(key) != memo.end())
+            return memo[key];
+
+        int includeCurr = (prevIndex == -1 || nums[currentIndex] > nums[prevIndex]) ?
+                            1 + lengthOfLISRecursive(nums, currentIndex, currentIndex + 1, memo) : 0;
+
+        int excludeCurr = lengthOfLISRecursive(nums, prevIndex, currentIndex + 1, memo);
+
+        int maxLength = std::max(includeCurr, excludeCurr);
+        memo[key] = maxLength; // Memoize the result
+
+        return maxLength;
+    }
+};*/
+
+
+
+
+   
+
+/*class Solution { //easy peasy //recursive soln
+public:
+    int lengthOfLIS(std::vector<int>& nums) {
+        return lengthOfLISRecursive(nums, -1, 0);
+    }
+
+private:
+    int lengthOfLISRecursive(const std::vector<int>& nums, int prevIndex, int currentIndex) {
+        if (currentIndex >= nums.size())
+            return 0;
+
+        // if we Include the current element in the subsequence
+        int includeCurr = (prevIndex == -1 || nums[currentIndex] > nums[prevIndex]) ?
+                            1 + lengthOfLISRecursive(nums, currentIndex, currentIndex + 1) : 0;
+
+        // if we Exclude the current element from the subsequence
+        int excludeCurr = lengthOfLISRecursive(nums, prevIndex, currentIndex + 1);
+
+        // Maximum of the two options
+        return max(includeCurr, excludeCurr);
+    }
+};
+*/

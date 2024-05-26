@@ -1,0 +1,77 @@
+class Solution {
+public:
+    string shortestCommonSupersequence(string s1, string s2) {
+       int n = s1.size();
+        int m = s2.size();
+        // tabulation method - first build the table and then we will
+        // print the SCS.
+        vector<vector<int>> dp(n+1,vector<int>(m+1));
+        // initialise the dp table which is equal to base case of recursion
+        int i,j;
+        for(i=0; i<n+1; i++)
+        {
+            // dp[i][0] means we have i char of s1 and 0 of s2 hence nothing in 
+            // commmon will be there.
+            dp[i][0] = 0;
+        }
+        for(j=0; j<m+1; j++)
+        {
+            dp[0][j] = 0;
+        }
+        for(i=1; i<n+1; i++)
+        {
+            for(j=1; j<m+1; j++)
+            {
+                if(s1[i-1]==s2[j-1])
+                {
+                    // say i and j are 3 so if their last char are equal we 
+                    // increase the ans by 1 and check in rest of their parts.
+                    dp[i][j] = 1+dp[i-1][j-1];
+                } else
+                {
+                    dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
+                }
+            }
+        }
+        // now lets print the SCS
+        i = n;
+        j = m;
+        string s = "";
+        while(i>0 && j>0)
+        {
+            if(s1[i-1]==s2[j-1])
+            {
+                // if char matches in both strings we will go diagonally
+                // back leftwards.
+                s+=s1[i-1];
+                i--;
+                j--;
+            } else if(dp[i-1][j]>dp[i][j-1])
+            {
+                s+=s1[i-1];
+                i--;
+            } else
+            {
+                s+=s2[j-1];
+                j--;
+            }
+        }
+        // now when this loop breaks either i will be 0 or j will be 0.
+        // add the remaining chars of that string whose index is 
+        // still not 0.
+        while(i>0)
+        {
+            s+=s1[i-1];
+            i--;
+        }
+        while(j>0)
+        {
+            s+=s2[j-1];
+            j--;
+        }
+        // now we have SCS but in reverse order cause we started
+        // from last index.
+        reverse(s.begin(),s.end());
+        return s; 
+    }
+};
