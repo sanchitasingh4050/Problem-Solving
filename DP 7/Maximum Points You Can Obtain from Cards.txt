@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxScore(vector<int>& nums, int k) {
+       vector<int>left(k+1);
+       vector<int>right(k+1);
+       int total=0;
+       left[0]=0;
+       right[0]=0;
+
+       for(int i=1;i<=k;i++)
+        {
+         left[i]=left[i-1]+nums[i-1];
+         right[i]=right[i-1]+nums[nums.size()-i];
+         }
+      for(int i=0;i<=k;i++)
+       {
+        total=total>(left[i]+right[k-i])?total:(left[i]+right[k-i]);
+       }
+     return total;
+
+    }
+};

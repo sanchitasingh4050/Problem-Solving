@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define MAX_N 1000
+
+int memo[MAX_N][MAX_N];        // DP table to store subproblem solutions
+int action[MAX_N][MAX_N];      // Array to store the "optimal action" for each state i, j
+  
+
+int calculateMaxProfit(int prices[], int start, int end, int n) {
+    if (memo[start][end] != -1)
+        return memo[start][end];
+
+    int year = n - (end - start);
+
+    if (start == end) 
+        return year * prices[start]; 
+
+                                                  // Profit on selling the wine from the front this year
+    int sellFront = prices[start] * year + calculateMaxProfit(prices, start + 1, end, n);
+
+                                                  // Profit on selling the wine from the end this year
+    int sellEnd = prices[end] * year + calculateMaxProfit(prices, start, end - 1, n);
+
+    int result = max(sellFront, sellEnd);
+    memo[start][end] = result;
+
+    if (sellFront >= sellEnd)
+        action[start][end] = 0; // Selling from the front is more profitable
+    else
+        action[start][end] = 1; // Selling from the end is more profitable
+
+    return result;
+}
+
+                                         // function to calculate the maximum profit
+int getMaxProfit(int prices[], int n) {
+                                         // Resetting the memoization table
+    for (int i = 0; i < MAX_N; i++)
+        for (int j = 0; j < MAX_N; j++)
+            memo[i][j] = -1;
+
+    int result = calculateMaxProfit(prices, 0, n - 1, n);
+
+    int i = 0, j = n - 1;
+
+                               // Determining the optimal selling order
+    while (i <= j) {
+        if (action[i][j] == 0) { // Selling from the beginning is optimal
+            cout << "beg ";
+            i++;
+        } else {               // Selling from the end is optimal
+            cout << "end ";
+            j--;
+        }
+    }
+
+    cout << endl;
+
+    return result;
+}
+
+int main() {
+    
+    int prices[] = { 2, 4, 6, 2, 5 };
+    int n = sizeof(prices) / sizeof(prices[0]);
+
+    int maxProfit = getMaxProfit(prices, n);
+    cout << maxProfit << endl;
+
+    return 0;
+}

@@ -1,0 +1,88 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// <----TABULATION---->
+
+int calculateStepsWithTabulation(int num) {
+    if (num < 2)
+        return 0;
+    vector<int> dp(num + 1, INT_MAX);
+    dp[1] = 0;
+    dp[2] = 1;
+    dp[3] = 1;
+    for (int i = 4; i <= num; i++) {
+        int stepsDivBy2 = INT_MAX, stepsDivBy3 = INT_MAX, stepsMinus1 = INT_MAX;
+        if (i % 2 == 0)
+            stepsDivBy2 = dp[i / 2];
+        if (i % 3 == 0)
+            stepsDivBy3 = dp[i / 3];
+        stepsMinus1 = dp[i - 1];
+        dp[i] = 1 + min(stepsDivBy2, min(stepsDivBy3, stepsMinus1));
+    }
+    return dp[num];
+}
+
+int main() {
+    int num;
+    cin >> num;
+    cout << calculateStepsWithTabulation(num);
+    return 0;
+}
+
+
+
+
+/* <----RECURSION---->
+
+ int calculateStepsRecursively(int num) {
+     if (num == 1)
+        return 0;
+    int stepsDivBy2 = INT_MAX, stepsDivBy3 = INT_MAX, stepsMinus1 = INT_MAX;
+     if (num % 2 == 0)
+         stepsDivBy2 = calculateStepsRecursively(num / 2);
+     if (num % 3 == 0)
+         stepsDivBy3 = calculateStepsRecursively(num / 3);
+     stepsMinus1 = calculateStepsRecursively(num - 1);
+     return 1 + min(stepsDivBy2, min(stepsDivBy3, stepsMinus1));
+ }
+*/
+
+
+
+/* <----MEMOIZATION---->
+
+int calculateStepsWithMemoization(int num, vector<int>& memo) {
+    if (memo[num] != -1) {
+        return memo[num];
+    }
+    int stepsDivBy2 = INT_MAX;
+    int stepsDivBy3 = INT_MAX;
+    int stepsMinus1 = 1 + calculateStepsWithMemoization(num - 1, memo);
+    if (num % 2 == 0) {
+        stepsDivBy2 = 1 + calculateStepsWithMemoization(num / 2, memo);
+    }
+    if (num % 3 == 0) {
+        stepsDivBy3 = 1 + calculateStepsWithMemoization(num / 3, memo);
+    }
+    memo[num] = min(stepsDivBy2, min(stepsDivBy3, stepsMinus1));
+    return memo[num];
+}
+
+int findMinStepsToOne(int num) {
+    vector<int> memo(num + 1, -1);
+    memo[0] = 0;
+    memo[1] = 0;
+    return calculateStepsWithMemoization(num, memo);
+}
+
+int main() {
+    int num;
+    cin >> num;
+    cout << findMinStepsToOne(num);
+    return 0;
+}
+*/
+
+
+
+
